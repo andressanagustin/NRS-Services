@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<!-- Devolucion -->
+	<class name="com.allc.arms.server.persistence.devolucion.Devolucion" table="DV_TICKET">
+		<id name="idDevs" column="ID_DEVS">
+			<generator class="native" />
+		</id>
+		<property name="idTrx" column="ID_TRN" />
+		<property name="idTipoDevs" column="ID_TIPOD" />
+		<property name="idEstado" column="ID_ESTADO" />
+		<property name="idStore" column="ID_BSN_UN" />
+	</class>
+	
+	<!-- Devolucion de Efectivo -->
+	<class name="com.allc.arms.server.persistence.devolucion.DevEfectivo" table="DV_EFEC">
+		<id name="idDevs" column="ID_DEVS">
+			<generator class="native" />
+		</id>
+		<property name="monto" column="MONTO" />
+	</class>
+	
+	<!-- Devolucion de Factura -->
+	<class name="com.allc.arms.server.persistence.devolucion.DevFactura" table="DV_FACT">
+		<id name="idDevs" column="ID_DEVS">
+			<generator class="native" />
+		</id>
+		<property name="monto" column="MONTO" />
+		<property name="estado" column="ESTADO" />
+	</class>
+	
+</hibernate-mapping>

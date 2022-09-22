@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<!-- PinPad -->
+	<class name="com.allc.arms.server.persistence.pinpad.PinPad" table="CFG_PINPAD">
+	
+		<id name="idPinpad" column="IDPINPAD">
+			<generator class="native" />
+		</id>
+
+		<property name="codTienda" column="COD_TIENDA" />
+		<property name="direccionIP" column="DIR_IP" />
+		<property name="mascara" column="MASCARA" />
+		<property name="gateway" column="GATEWAY" />
+		<property name="dirIPHostPRedA" column="DIR_IP_HP_RA" />
+		<property name="puertoTcpHostPRedA" column="PRT_HP_RA" />
+		<property name="dirIPHostARedA" column="DIR_IP_HA_RA" />
+		<property name="puertoTcpHostARedA" column="PRT_HA_RA" />
+		<property name="dirIPHostPRedB" column="DIR_IP_HP_RB" />
+		<property name="puertoTcpHostPRedB" column="PRT_HP_RB" />
+		<property name="dirIPHostARedB" column="DIR_IP_HA_RB" />
+		<property name="puertoTcpHostARedB" column="PRT_HA_RB" />
+		<property name="puertoEscucha" column="PRT_ESCH" />
+		<property name="tidDatafast" column="TID_DATA" />
+		<property name="tidMedianet" column="TID_MED" />
+		<property name="cidCaja" column="CID_CAJA" />
+		<property name="fechaUltimoCierre" column="FECHA_ULT_CIERRE" />
+		<property name="actualizar" column="ACTUALIZAR" />
+		
+	</class>
+	
+</hibernate-mapping>

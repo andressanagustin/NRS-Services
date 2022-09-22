@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+    <!-- AUTHORIZES OPC -->
+    <class name="com.allc.arms.server.persistence.equipo.Jetson" table="CT_EQUIPOS">
+        <id name="codigoEqu" column="CODIGO_EQU">
+            <generator class="increment" />
+        </id>
+        <property name="desEqu" column="DESCRIPCION_EQU" />
+        <property name="macEqu" column="MAC_EQU" />
+        <property name="ipEqu" column="IP_EQU" />
+        <property name="fecNew" column="FECHA_CREACION_EQU" />
+        <property name="fecUpdate" column="FECHA_MODIFICACION_EQU" />
+        <property name="estadoActivo" column="ESTA_ACTIVO_EQU"/>
+        <property name="codigoVap" column="CODIGO_VAP"/>
+        <property name="hsExtErrores" column="HORA_EXTRAE_ERRORES_VAP" />
+        <property name="userFtp" column="USER_ftp_EQU" />
+        <property name="passFtp" column="PASS_ftp_EQU" />
+        <property name="idEquipo" column="ID_EQUIPO" />
+        <property name="status" column="EMT_ESTADO" />
+        <property name="statusReiniciar" column="STATUS_REINICIAR" />
+        <property name="statusApagar" column="STATUS_APAGAR" />
+        <property name="statusUpload" column="STATUS_UPLOAD" />
+        <property name="fecUpload" column="MODIFICACION_UPLOAD" />
+        <property name="infoEqipo" column="INF_EQUIPO" />
+        <property name="pingStatus" column="STATUS_PING" />
+        <property name="pingStatusUp" column="STATUS_PING_UP" />
+        <property name="statusUploadUp" column="STATUS_UPLOAD_UP" />
+        <property name="statusRegistrarUp" column="STATUS_REGISTRAR_UP" />
+        <property name="idLocal" column="ID_LOCAL" />
+        <property name="fileUploadUp" column="FILE_UPLOAD_UP" />
+        <property name="emtEstadoDesde" column="FECHA_EMT_ESTADO_D" />
+        <property name="emtEstadoHasta" column="FECHA_EMT_ESTADO_H" />
+    </class>
+        
+    <class name="com.allc.arms.server.persistence.equipo.JetsonEntrenamiento" table="CT_ENTRENAMIENTO">
+        <id name="codigoEnt" column="CODIGO_ENT"/>
+        <property name="urlArchivosEquipoOrigenEnt" column="URL_ARCHIVOS_EQUIPO_ORIGEN_ENT" />
+        <property name="fechaCreacionEnt" column="FECHA_CREACION_ENT" />
+        <property name="codigoEqu" column="CODIGO_EQU" />
+    </class>
+
+    <class name="com.allc.arms.server.persistence.equipo.JetsonUploadFile" table="CT_UPLOAD_FILE" >
+        <id name="idFileEquipo" column="ID_FILE_EQU">
+            <generator class="increment" />
+        </id>
+        <property name="fecha" column="FECHA" />
+        <property name="codigoEqu" column="CODIGO_EQU" />
+        <property name="urlArchivosEquipoOrigenEnt" column="URL_ARCHIVOS_EQUIPO_ORIGEN_ENT" />
+        <property name="estado" column="ESTADO" />
+    </class>
+    <class name="com.allc.arms.server.persistence.equipo.JetsonVersionAprendizaje" table="CT_VERSION_APRENDIZAJE">
+        <id name="codigoVap" column="CODIGO_VAP"/>
+        <property name="urlArchivosVap" column="URL_ARCHIVOS_VAP" />
+        <property name="versionVap" column="VERSION_VAP" />
+        <property name="fechaCreacionVap" column="FECHA_CREACION_VAP" />
+        <property name="fechaEdicionVap" column="FECHA_EDICION_VAP" />
+        <property name="codigoEnt" column="CODIGO_ENT" />
+    </class>	
+</hibernate-mapping>

@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+ <session-factory>
+  <!-- Database connection settings -->
+  <property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+  <property name="connection.url">jdbc:sqlserver://$(serverName):$(dbPort);databaseName=PRCFLJ_EC;instance=$(instanceName);</property>
+  <property name="connection.username">PRCFLJ_EC</property>
+  <property name="connection.password">PRCFLJ_EC</property>
+
+  <!-- SQL dialect -->
+  <property name="dialect">org.hibernate.dialect.SQLServerDialect</property>   
+  <!-- JDBC connection pool (C3P0) -->
+  <property name="hibernate.c3p0.min_size">3</property>
+  <property name="hibernate.c3p0.max_size">10</property>
+  <property name="hibernate.c3p0.timeout">300</property>
+  <property name="hibernate.c3p0.max_statements">50</property>
+  <property name="hibernate.c3p0.idle_test_period">3000</property>
+   
+  <!-- Echo all executed SQL to stdout -->
+  <property name="hibernate.show_sql">false</property>
+  <property name="hibernate.format_sql">false</property>
+  <property name="hibernate.use_sql_comments">false</property>
+  <property name="motor.db">sqlserver</property>
+   
+  <!-- Update the changes to the database schema on startup   -->
+  <property name="hibernate.oracle.auto">update</property>
+		
+  <mapping resource="mapeo/sqlserver/mappingFlejes.hbm.xml"/>
+  
+  <mapping resource="mapeo/sqlserver/mappingMotoFile.hbm.xml"/>
+  
+ </session-factory>
+  
+</hibernate-configuration>

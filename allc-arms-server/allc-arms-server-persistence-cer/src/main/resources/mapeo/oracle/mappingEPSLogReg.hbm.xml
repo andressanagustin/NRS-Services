@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<class name="com.allc.arms.server.persistence.epsLog.EPSLogReg" table="CO_EPS_LOG">
+		<id name="id" column="ID_EPS_LOG">
+			<generator class="native" />
+		</id>
+		<property name="storeNumber" column="CD_STR_RT" />
+		<property name="dateTime" column="EXECUTION_DATE" />
+		<property name="businessDate" column="BUSINESS_DATE" />
+		<property name="header" column="HEADER" />
+		<property name="data" column="DATA" />
+	</class>
+	
+</hibernate-mapping>

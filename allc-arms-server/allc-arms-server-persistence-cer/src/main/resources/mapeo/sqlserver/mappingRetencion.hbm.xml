@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+	<!-- RETENCION DATA -->
+	<class name="com.allc.entities.RetencionData" table="CO_RTNC_CER">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="AI_LN_ITM" />
+		</composite-id>
+		<property name="indicador" column="INDICADOR" />
+		<property name="terminal" column="TERMINAL" />
+		<property name="tiquete" column="TIQUETE" />
+		<property name="fecha" column="FECHA" />
+		<property name="voucher" column="VOUCHER" />
+		<property name="numeroSRI" column="NUMERO_SRI" />
+		<property name="monto" column="MONTO" />
+		<property name="baseImp" column="BASE_IMP" />
+		<property name="porcentaje" column="PORCENTAJE" />
+		<property name="idCliente" column="CLNT_ID" />
+		<property name="nombre" column="CLNT_NM" />
+		<property name="tipo" column="TIPO" />
+	</class>
+	
+</hibernate-mapping>

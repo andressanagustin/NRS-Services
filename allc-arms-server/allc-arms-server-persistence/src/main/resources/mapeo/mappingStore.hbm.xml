@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<!-- Parval -->
+	<class name="com.allc.arms.server.persistence.store.Store" table="MN_TIENDA">
+		<id name="storeId" column="COD_TIENDA">
+			<generator class="native" />
+		</id>
+		<property name="name" column="DES_TIENDA" />
+		<property name="key" column="DES_CLAVE" />
+		<property name="address" column="DIRECCION" />
+		<property name="regionCode" column="COD_REGION" />
+		<property name="cityCode" column="COD_CIUDAD" />
+		<property name="ip" column="IP" />
+		<property name="status" column="IND_ACTIVO" />
+		<property name="lastUpdate" column="FECHA" />
+		<property name="progressIniLoadOpe" column="PROGRESO_OPERA_ESTADO" />
+	</class>
+	
+</hibernate-mapping>

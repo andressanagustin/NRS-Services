@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<!-- Supervisor -->
+	<class name="com.allc.arms.server.persistence.supervisor.Supervisor" table="OP_CODSUPER">
+		<id name="idOperadorSupervisor" column="ID_CODSUPER">
+			<generator class="native">
+			</generator>
+		</id>
+		
+		
+		<property name="clave" column="CLAVE" />
+		<property name="clave128" column="CODE128" />
+		<property name="estado" column="ESTADO" />
+		<property name="idRegistro" column="IDREG" />
+		<property name="fechaInicio" column="FECHA_INI" />
+		<property name="fechaFin" column="FECHA_FIN" />
+		
+		
+		<!-- Operador -->
+		<many-to-one name="operador" column="ID_OPERADOR" class="com.allc.arms.server.persistence.operator.Operator"
+			cascade="save-update" />
+	</class>
+	
+</hibernate-mapping>

@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<!--###########	MESSAGE	###########-->
+
+	<class name="com.allc.entities.Message" table="FE_MESSAGE">
+
+		<id name="idMessage" column="ID_MESSAGE">
+			<generator class="native" />
+		</id>
+
+		<property name="eventDate" column="EVENT_DATE" />
+		<property name="channel" column="CHANNEL" />
+		<property name="pmSource" column="PM_SOURCE" />
+		<property name="messageGroup" column="MESSAGE_GROUP" />
+		<property name="messageNumber" column="MESSAGE_NUMBER" />
+		<property name="sourceNumber" column="SOURCE_NUMBER" />
+		<property name="eventNumber" column="EVENT_NUMBER" />
+		<property name="severity" column="SEVERITY" />
+		<property name="data" column="DATA" />
+		<property name="codLocal" column="ID_LOCAL" />
+		<many-to-one name="equipo" class="com.allc.entities.Equipo" cascade="save-update"
+			not-null="true">
+			<column name="ID_EQUIPO" />
+		</many-to-one>
+
+<!-- 		<one-to-one name="messageSource" class="com.allc.entities.MessageSource" cascade="save-update"> -->
+<!-- 		</one-to-one> -->
+		
+	</class>
+	
+	<!--###########	MESSAGE SOURCE	###########-->
+
+<!-- 	<class name="com.allc.entities.MessageSource" table="FFQ_MESSAGE"> -->
+
+<!-- 		<id name="idMessage" column="ID_MESSAGE"> -->
+<!-- 			<generator class="assigned" /> -->
+<!-- 		</id> -->
+
+<!-- 		<many-to-one name="equipo" class="com.allc.entities.Equipo" cascade="save-update" -->
+<!-- 			not-null="true"> -->
+<!-- 			<column name="ID_EQUIPO" /> -->
+<!-- 		</many-to-one> -->
+<!-- 		<property name="idLocal" column="ID_LOCAL" /> -->
+<!-- 		<property name="eventDate" column="EVENT_DATE" /> -->
+<!-- 	</class> -->
+	
+	<!--###########	EQUIPO	###########-->
+
+	<class name="com.allc.entities.Equipo" table="FM_EQUIPO">
+
+		<id name="idEquipo" column="ID_EQUIPO">
+			<generator class="native" />
+		</id>
+
+		<property name="desClave" column="DES_CLAVE" />
+		<property name="desEquipo" column="DES_EQUIPO" />
+		<property name="ip" column="IP" />
+		<property name="indOnline" column="IND_ONLINE" />
+		<property name="indActivo" column="IND_ACTIVO" />
+		<property name="idTipo" column="ID_TIPO" />
+		<property name="idLocal" column="ID_LOCAL" />
+	</class>
+	
+	<!--###########	EJECUCION	###########-->
+
+	<class name="com.allc.entities.Ejecucion" table="FP_EJECUCION">
+
+		<id name="idEjecucion" column="ID_EJECUCION">
+			<generator class="native" />
+		</id>
+		<property name="codLocal" column="ID_LOCAL" />
+
+		<many-to-one name="proceso" class="com.allc.entities.Proceso" cascade="save-update"
+			not-null="true">
+			<column name="ID_PROCESO" />
+		</many-to-one>
+		<property name="execDate" column="EXECUTION_DATE" />
+		<many-to-one name="equipo" class="com.allc.entities.Equipo" cascade="save-update"
+			not-null="true">
+			<column name="ID_EQUIPO" />
+		</many-to-one>
+		<many-to-one name="tipoEstado" class="com.allc.entities.TipoEstado" cascade="save-update"
+			not-null="true">
+			<column name="TIP_ESTADO" />
+		</many-to-one>
+		<property name="data" column="DATA" />
+	</class>
+	
+	<!--###########	PROCESO	###########-->
+
+	<class name="com.allc.entities.Proceso" table="FP_PROCESO">
+
+		<id name="idProceso" column="ID_PROCESO">
+			<generator class="native" />
+		</id>
+
+		<property name="clave" column="DES_CLAVE" />
+		<property name="descripcion" column="DES_PROCESO" />
+	</class>
+	
+	<!--###########	TIPO ESTADO	###########-->
+
+	<class name="com.allc.entities.TipoEstado" table="FM_TIP_ESTADO">
+
+		<id name="idTipoEstado" column="ID_TIP_ESTADO">
+			<generator class="native" />
+		</id>
+
+		<property name="abreviatura" column="ABR_TIP_ESTADO" />
+		<property name="descripcion" column="DES_TIP_ESTADO" />
+	</class>
+	
+</hibernate-mapping>

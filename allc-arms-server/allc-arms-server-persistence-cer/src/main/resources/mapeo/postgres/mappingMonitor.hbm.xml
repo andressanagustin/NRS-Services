@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<!-- CedPadRuc -->
+	<class name="com.allc.arms.server.persistence.monitor.Monitor" table="MONITOR">
+		<composite-id>
+			<key-property name="id_local" column="ID_LOCAL" />
+			<key-property name="des_clave" column="DES_CLAVE" />
+		</composite-id>
+		<property name="fec_actualizacion" column="FEC_ACTUALIZACION" />
+		<property name="cantidad" column="CANTIDAD" />
+		<property name="monto" column="MONTO" />
+		<property name="cantidad_bd" column="CANTIDAD_BD" />
+		<property name="monto_bd" column="MONTO_BD" />
+		<property name="idTrn" column="ID_TRN" />
+		<property name="fechaIdTrn" column="FEC_ACT_ID_TRN" />
+		<property name="fechaEtl" column="FEC_ETL" />
+		<property name="fechaR" column="FEC_R" />
+		<property name="fechaPromociones" column="FEC_PROMOCIONES" />
+		<property name="fechaControlador" column="FEC_CONTROLADOR" />
+	</class>
+	
+</hibernate-mapping>

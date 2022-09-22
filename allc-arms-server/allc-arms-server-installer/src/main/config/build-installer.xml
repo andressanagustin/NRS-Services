@@ -1,0 +1,116 @@
+<assembly>
+	<formats>
+		<format>jar</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<dependencySets>
+		<dependencySet>
+			<unpack>false</unpack>
+			<outputDirectory>/ArmsServer</outputDirectory>
+			<outputFileNameMapping>ArmsServer.jar</outputFileNameMapping>
+			<includes>
+				<include>alliances:allc-arms-server-store:jar</include>
+			</includes>
+		</dependencySet>
+		 <dependencySet>
+ 			<unpack>true</unpack>
+ 			<outputDirectory>/ArmsServer</outputDirectory>
+ 			<includes>
+ 				<include>alliances:allc-arms-server-store:zip:config</include>
+ 			</includes>
+ 		</dependencySet>
+		<dependencySet>
+ 			<unpack>true</unpack>
+ 			<outputDirectory>/Suite</outputDirectory>
+ 			<includes>
+ 				<include>alliances:suite:zip:configuration</include>
+ 			</includes>
+ 		</dependencySet>
+ 		<dependencySet>
+ 			<unpack>true</unpack>
+ 			<outputDirectory>/Suite</outputDirectory>
+ 			<includes>
+ 				<include>alliances:server:zip:configuration</include>
+ 			</includes>
+ 		</dependencySet>
+ 		 <dependencySet>
+ 			<unpack>true</unpack>
+ 			<outputDirectory>/</outputDirectory>
+ 			<includes>
+ 				<include>alliances:eq:zip:configuration</include>
+ 			</includes>
+ 		</dependencySet>
+		<dependencySet>
+ 			<unpack>true</unpack>
+ 			<outputDirectory>/</outputDirectory>
+ 			<includes>
+ 				<include>alliances:winrun4j:zip:configuration</include>
+ 			</includes>
+ 		</dependencySet>
+<!--  		<dependencySet> -->
+<!--  			<unpack>true</unpack> -->
+<!--  			<outputDirectory>/scripts</outputDirectory> -->
+<!--  			<includes> -->
+<!--  				<include>alliances:allc-arms-server-persistence:zip:scripts-oracle</include> -->
+<!--  			</includes> -->
+<!--  		</dependencySet> -->
+ 		 <dependencySet>
+ 			<unpack>true</unpack>
+ 			<outputDirectory>/scripts</outputDirectory>
+ 			<includes>
+ 				<include>alliances:allc-arms-server-persistence:zip:scripts-sqlserver</include>
+ 			</includes>
+ 		</dependencySet>
+<!--  		 <dependencySet> -->
+<!--  			<unpack>true</unpack> -->
+<!--  			<outputDirectory>/ArmsServer</outputDirectory> -->
+<!--  			<includes> -->
+<!--  				<include>alliances:allc-arms-server-persistence:zip:hibernate-config-oracle</include> -->
+<!--  			</includes> -->
+<!--  		</dependencySet> -->
+ 		 <dependencySet>
+ 			<unpack>true</unpack>
+ 			<outputDirectory>/ArmsServer</outputDirectory>
+ 			<includes>
+ 				<include>alliances:allc-arms-server-persistence:zip:hibernate-config-sqlserver</include>
+ 			</includes>
+ 		</dependencySet>
+ 		<dependencySet>
+			<unpack>true</unpack>
+			<outputFileNameMapping />
+			<includes>
+				<include>alliances.dependencies:ant-installer</include>
+				<include>alliances.dependencies:ant-installer-ext</include>
+				<include>org.apache.ant:ant</include>
+				<include>org.apache.ant:ant-launcher</include>
+				<include>org.apache.ant:ant-nodeps</include>
+			</includes>
+		</dependencySet>
+		<!-- Dependencias para Distributor -->
+		 <dependencySet>
+			<unpack>false</unpack>
+			<outputDirectory>/Distributor</outputDirectory>
+			<outputFileNameMapping>rs-transaction-distributor-db.jar</outputFileNameMapping>
+			<includes>
+				<include>alliances:rs-transaction-distributor-db:jar</include>
+			</includes>
+		</dependencySet>
+ 		<dependencySet>
+ 			<unpack>true</unpack>
+ 			<outputDirectory>/Distributor</outputDirectory>
+ 			<includes>
+ 				<include>alliances:rs-transaction-distributor-db:zip:config</include>
+ 			</includes>
+ 		</dependencySet>
+	</dependencySets>
+	<fileSets>
+		<fileSet>
+			<directory>src/main/config/</directory>
+			<outputDirectory>/</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>src/main/resources/</directory>
+			<outputDirectory>/resources/</outputDirectory>
+		</fileSet>
+	</fileSets>
+</assembly>

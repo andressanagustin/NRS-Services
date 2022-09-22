@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<!-- CedPadRuc -->
+	<class name="com.allc.arms.server.persistence.moto.Moto" table="CO_MOTO_CER">
+		<id name="idMoto" column="ID_MOTO">
+			<generator class="native" />
+		</id>
+		<property name="mandante" column="MANDANTE" />
+		<property name="material" column="MATERIAL" />
+		<property name="motor" column="MOTOR" />
+		<property name="serie" column="SRL_NBR" />
+		<property name="numSRI" column="NUM_SRI" />
+		<property name="chasis" column="CHASIS" />
+		<property name="anoFabricacion" column="ANO_MOD" />
+		<property name="clase" column="CLASE" />
+		<property name="color" column="COLOR" />
+		<property name="cilindraje" column="CILINDRAJE" />
+		<property name="capAsiento" column="CAPACIDAD" />
+		<property name="numCPN" column="CPN" />
+		<property name="tieneNumCPN" column="GRAVAMEN" />
+		<property name="fechaCPN" column="FECHA_CPN" />
+		<property name="subcategoria" column="SUBCATEGORIA" />
+		<property name="tipoCombustible" column="COMBUSTIBLE" />
+		<property name="tipoCarroceria" column="CARROCERIA" />
+		<property name="numCKD" column="CKD" />
+		<property name="marca" column="MARCA" />
+		<property name="modelo" column="MODELO" />
+		<property name="paisOrigen" column="PAIS_ORIG" />
+		<property name="tonelaje" column="TONELAJE" />
+		<property name="centro" column="CENTRO" />
+		<property name="status" column="STATUS" />
+		<property name="ejes" column="EJES" />
+		<property name="ruedas" column="RUEDAS" />
+		<property name="itemID" column="ID_ITM" />
+	</class>
+	
+</hibernate-mapping>

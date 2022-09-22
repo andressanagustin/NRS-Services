@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: . ../lib/snmp4j-2.1.0.jar ../lib/log4j-1.2.16.jar ../lib/ServiceEQtoNagios.jar /C:/java/lib/os4690.zip
+Main-Class: com.synthesis.main.Main
+

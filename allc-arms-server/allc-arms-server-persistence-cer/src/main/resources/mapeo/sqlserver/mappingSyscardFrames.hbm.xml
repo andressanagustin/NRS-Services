@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<!-- PinPad -->
+	<class name="com.allc.arms.server.persistence.syscard.SyscardFrame" table="SYS_FRM_DT">
+	
+		<id name="idSysFrame" column="ID_SYS_FRM_DT">
+			<generator class="native" />
+		</id>
+
+		<property name="messageType" column="MT" />
+		<property name="bitMap1" column="BM1" />
+		<property name="bitMap2" column="BM2" />
+		<property name="primaryAccNum" column="PRY_ACC_NBR" />
+		<property name="processingCode" column="PRC_CD" />
+		<property name="trxAmount" column="TRX_AMNT" />
+		<property name="systemTraceAuditNum" column="SYS_TRC_ADT_NBR" />
+		<property name="localTrxTime" column="LCL_TRX_TM" />
+		<property name="localTrxDate" column="LCL_TRX_DT" />
+		<property name="expirationDate" column="EXP_DT" />
+		<property name="posEntryMode" column="POS_ENTRY_MD" />
+		<property name="networkIntID" column="NT_INT_ID" />
+		<property name="posConditionCode" column="POS_CND_CD" />
+		<property name="track2" column="TRCK_2" />
+		<property name="retrievalRefNum" column="RT_RF_NBR" />
+		<property name="autorizationNum" column="AUT_NBR" />
+		<property name="responseCode" column="RSP_CD" />
+		<property name="terminalID" column="TRML_ID" />
+		<property name="merchantID" column="MRCHNT_ID" />
+		<property name="track1" column="TRCK_1" />
+		<property name="numLoteAct" column="NRO_LO_ACT" />
+		<property name="additionalData105" column="ADD_DT_105" />
+		<property name="additionalData112" column="ADD_DT_112" />
+		<property name="additionalData114" column="ADD_DT_114" />
+		<property name="reservedNatUse" column="RSVD_NAT_USE" />
+		<property name="additionalData120" column="ADD_DT_120" />
+		<property name="additionalData122" column="ADD_DT_122" />
+		<property name="reservedPrivUse" column="RSVD_PRV_USE" />
+		<property name="reserved" column="RSVD" />
+		<property name="regDate" column="REG_DT" />
+	</class>
+	
+</hibernate-mapping>

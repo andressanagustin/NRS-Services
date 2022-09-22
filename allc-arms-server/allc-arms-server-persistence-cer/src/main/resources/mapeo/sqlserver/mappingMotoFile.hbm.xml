@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<!-- MOTO FILE -->
+	<class name="com.allc.arms.server.persistence.moto.file.MotoFile" table="MOTO_FILES">
+		<id name="motoFileId" column="ID_MOTOFILE">
+			<generator class="native" />
+		</id>
+		<property name="motoFileName" column="NOM_MOTOFILE" />
+		
+	</class>
+</hibernate-mapping>

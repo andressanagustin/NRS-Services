@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+            <!-- parametros para la conexion a la base de datos -->
+		    <property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+		    <property name="connection.url">jdbc:oracle:thin:@127.0.0.1:1521:XE</property>
+		    <property name="connection.username">CRM_EC</property>
+		    <property name="connection.password">CRM_EC</property>
+
+		    <!-- Dialecto de la base de datos -->
+		    <property name="dialect">org.hibernate.dialect.Oracle10gDialect</property>
+		    
+		    <!-- Otras propiedades importantes -->
+		    <property name="show_sql">false</property>
+		    
+		    <property name="motor.db">oracle</property>
+		    
+		    <!-- Archivos de mapeo -->
+		    <mapping resource="mapeo/oracle/mappingCRM.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

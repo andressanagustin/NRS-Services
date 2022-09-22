@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!DOCTYPE installer PUBLIC "-//tp23 //DTD Ant Installer Config//EN" "http://antinstaller.sf.net/dtd/antinstall-config-0.8.dtd">
+
+<installer
+        ui="swing,text"
+        verbose="true"
+        debug="false"
+        lookAndFeel="org.tp23.jgoodies.plaf.plastic.PlasticXPLookAndFeel"
+        name="ARMS Server Installer"
+        windowIcon="/resources/ICONO_ALLC.png"
+        defaultImageResource="/resources/ICONO_ALLC.png"
+        minJavaVersion="1.6"
+        antialiased="true"
+        finishButtonText="Instalar"
+        version="1.0">
+    <page
+        type="input"
+        name="intro"
+        displayText="Bienvenido">
+        <comment
+            displayText="Antes de comenzar la instalación debe asegurarse de tener instalado:"
+            />
+         <comment
+            displayText="- Java"
+            />
+          <comment
+            displayText="- IIS"
+            />
+          <comment
+            displayText="- PHP"
+            />
+          <comment
+            displayText="- Motor de BD"
+            />
+    </page>
+
+	<page type="input" name="selector" displayText="Componentes a instalar">
+
+		<select defaultValue="store" property="installType"
+			displayText="Tipo de Instalación">
+			<option text="Tienda" value="store" />
+			<option text="Central" value="central" />
+		</select>
+		
+		<text property="store.code" defaultValue="000" displayText="Codigo de la Tienda:" />
+		
+		<text property="ip.central" defaultValue="0.0.0.0" displayText="IP de Tienda Central" />
+		
+		<checkbox displayText="Instalar Servicios Windows" property="instServices" defaultValue="true" />
+		
+		<select defaultValue="64" property="windowsBits"
+			displayText="Windows:">
+			<option text="32 bits" value="32" />
+			<option text="64 bits" value="64" />
+		</select>
+		
+	</page>
+	
+	<page type="input" name="InstDIR"
+		displayText="Opciones de instalación de Suite ARMS">
+
+		<comment
+            displayText="Directorio de Instalación:"
+            />
+         <comment
+            displayText="C:\ALLC"
+            />
+		
+	</page>
+	
+<!-- 	<page name="configOracle" displayText="Configuración de BD" type="input" > -->
+<!-- 		<text property="datasource.host" defaultValue="localhost" displayText="Host" /> -->
+<!-- 		<text property="datasource.port" defaultValue="1521" displayText="Port" /> -->
+<!-- 		<text property="datasource.serviceName" defaultValue="XE" displayText="Service Name" /> -->
+<!-- 		<text property="datasource.user" defaultValue="SYSTEM" displayText="User" /> -->
+<!-- 		<password property="datasource.pass" defaultValue="" regex="^[a-zA-Z_0-9]{0,20}$" textMask="true" displayText="Password" /> -->
+<!-- 	</page> -->
+	
+	<page name="configSQLServer" displayText="Configuración de BD" type="input" >
+		<text property="datasource.host" defaultValue="localhost" displayText="Host" />
+		<text property="datasource.port" defaultValue="1433" displayText="Port" />
+		<text property="datasource.instanceName" defaultValue="SQLEXP" displayText="Instance Name" />
+		<text property="datasource.user" defaultValue="sa" displayText="User" />
+		<password property="datasource.pass" defaultValue="" regex="^[a-zA-Z_0-9]{0,20}$" textMask="true" displayText="Password" />
+	</page>
+	
+	<page type="progress" name="progress"
+		displayText="Progreso de Instalación" showTargets="true"
+		target="serverConfig,suite,armsServer,distributor,EQServer,createDB,windowsServices,fileConfig">
+		
+	</page>
+	
+</installer>

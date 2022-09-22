@@ -1,0 +1,13 @@
+<assembly>
+	<id>scripts-oracle</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<fileSets>
+		<fileSet>
+			<directory>src/main/config/scripts/oracle</directory>
+			<outputDirectory>/scripts</outputDirectory>
+		</fileSet>
+	</fileSets>
+</assembly>

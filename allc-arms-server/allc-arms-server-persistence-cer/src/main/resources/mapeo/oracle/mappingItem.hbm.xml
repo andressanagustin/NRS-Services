@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+    <!-- ITEM -->
+    <class name="com.allc.entities.Item" table="AS_ITM">
+        <id name="itemID" column="ID_ITM">
+            <generator class="native" />
+        </id>
+        <property name="itemCode" column="CD_ITM" />
+        <property name="flWorM" column="FL_WM_RQ" />
+        <property name="flPriceReq" column="FL_RP_RQ" />
+        <property name="flQuantityAllw" column="FL_QY_ALW" />
+        <property name="flQuantityReq" column="FL_QY_RQ" />
+        <property name="name" column="NM_ITM" />
+        <property name="description" column="DE_ITM" />
+        <property name="codigoSAP" column="CD_SAP" />
+        <property name="flDscItm" column="FL_ITM_DSC" />
+        <property name="referenciaSAP" column="REF_SAP" />
+        <property name="jerarquia" column="JERARQUIA" />
+        <property name="itemType" column="ID_TY_ITM" />
+		
+        <bag name="itemsStore" cascade="save-update" inverse="true">
+            <key column="ID_ITM" />
+            <one-to-many class="com.allc.entities.ItemStore" />
+        </bag>
+
+        <many-to-one name="merchandiseHierarchyGroup" column="ID_MRHRC_GP" class="com.allc.entities.MerchandiseHierarchyGroup"
+                             cascade="save-update" />
+    </class>
+	
+    <!-- ITEM - STORE -->
+    <class name="com.allc.entities.ItemStore" table="AS_ITM_STR">
+        <composite-id>
+            <key-property name="itemID" column="ID_ITM" />
+            <key-property name="retailStoreID" column="ID_BSN_UN" />
+        </composite-id>
+        <property name="salesPrice" column="SLS_PRC" />
+        <property name="taxA" column="TX_A" />
+        <property name="taxB" column="TX_B" />
+        <property name="taxC" column="TX_C" />
+        <property name="taxD" column="TX_D" />
+        <property name="taxE" column="TX_E" />
+        <property name="taxF" column="TX_F" />
+        <property name="taxG" column="TX_G" />
+        <property name="taxH" column="TX_H" />
+        <property name="flAuthorizedForSale" column="FL_AZN_FR_SLS" />
+        <property name="specialFamily" column="ID_SPL_FMY" />
+        <property name="precioMayoreo" column="PRC_MAY" />
+        <property name="cantidadMayoreo" column="QTY_MAY" />
+        <property name="flagMayoreo" column="FLG_MAY" />
+        <property name="proveedor" column="PROVEEDOR" />
+        <property name="deducible" column="DEDUCIBLE" />
+        <property name="color" column="COLOR" />
+        <property name="medida" column="MEDIDA" />
+        <property name="diseno" column="DISENO" />
+        <property name="marca" column="MARCA" />
+        <property name="presentacion" column="PRESENTACION" />
+        <property name="flAcumMovDat" column="FL_ACUM_MOV_DAT" />
+        <property name="flCouponComUsed" column="FL_CP_COM_USED" />
+        <property name="flMultVales" column="FL_MULT_VAL" />
+        <property name="flSaleItemExcepLog" column="FL_SLS_EXCEP_LOG" />
+        <property name="flLogtochangefile" column="FL_CHG_ITEM_CHG_FILE" />
+        <property name="flPointsOnlyItemCoupon" column="FL_VAL_ONLY_PTS" />
+        <property name="flPointsApplytoItem" column="FL_PTS_SLS" />
+        <property name="flItemLinkstoDeposit" column="FL_ITM_LNK_DEP" />
+        <property name="flRestrictedSale" column="FL_ITM_SLS_TIM" />
+        <property name="flFuelVolumeRequired" column="FL_ITEM_COMB" />
+        <property name="restricSaleType" column="RST_SLS_TYP" />
+    </class>
+
+    <!-- Store -->
+    <class name="com.allc.entities.RetailStore" table="PA_STR_RTL">
+        <id name="retailStoreID" column="ID_BSN_UN">
+            <generator class="sequence">
+                <param name="sequence">pa_str_rtl_id_bsn_un_seq</param>
+            </generator>
+        </id>
+        <property name="description" column="DE_STR_RT" />
+        <property name="code" column="CD_STR_RT" />
+        <property name="ivatax" column="IVA_TAX" />
+        <property name="includeTax" column="INC_PRC" />
+        <property name="tax1" column="IMP_1" />
+        <property name="tax2" column="IMP_2" />
+        <property name="tax3" column="IMP_3" />
+        <property name="tax4" column="IMP_4" />
+        <property name="tax5" column="IMP_5" />
+        <property name="tax6" column="IMP_6" />
+        <property name="tax7" column="IMP_7" />
+        <property name="tax8" column="IMP_8" />
+        <property name="ceCobe" column="CE_COBE" />
+        <property name="noAfiliadoFlag" column="NO_AFIL_FL" />
+        <property name="idCtab" column="ID_CTAB" />
+        <property name="distDir" column="DIST_DIR" />
+        <property name="flagStockLoad" column="FL_STOCK_LOAD" />
+        <property name="idRetailStoreGroup" column="ID_BSN_UN_GP" />
+    </class>
+	
+    <!-- RETAIL STORE STATUS -->
+    <class name="com.allc.entities.RetailStoreStatus" table="PA_STR_STS">
+        <id name="retailStoreID" column="ID_BSN_UN">
+            <generator class="native" />
+        </id>
+        <property name="businessDayDate">
+            <column name="DC_DY_BSN" />
+        </property>
+        <property name="period">
+            <column name="ID_CLD_PRD" />
+        </property>
+    </class>
+	
+    <!-- BARCODES -->
+    <class name="com.allc.entities.POSIdentity" table="ID_PS">
+        <composite-id>
+            <key-property name="posIdentityID" column="ID_ITM_PS" type="long"/>
+            <key-property name="itemID" column="ID_ITM" />
+            <key-property name="retailStoreID" column="ID_BSN_UN" />
+        </composite-id>
+        <property name="priority" column="PRTY" />
+    </class>
+	
+	
+    <!-- POS DEPARTMENT -->
+    <class name="com.allc.entities.POSDepartment"
+               table="ID_DPT_PS">
+        <id name="id" column="ID_DPT_PS">
+            <generator class="native" />
+        </id>
+        <property name="name" column="NM_DPT_PS" />
+        <property name="codNegocio" column="COD_NEGOCIO" />
+        <property name="codDptoCer" column="CD_DPT_CER" />
+        <property name="porcentajeRecargo" column="PORC_REC" />
+        <property name="porcentajeDscEmp" column="PORC_DESEMP" />
+        <property name="porcentajeBonSol" column="PORC_BOSOL" />
+        <property name="qtyFlias" column="QTY_MRHRC_GP" />
+    </class>
+	
+    <!-- MERCHANDISE HIERARCHY GROUP -->
+    <class name="com.allc.entities.MerchandiseHierarchyGroup"
+               table="CO_MRHRC_GP">
+        <id name="id" column="ID_MRHRC_GP">
+            <generator class="native" />
+        </id>
+        <property name="code" column="CD_MRHRC_GP" />
+        <property name="name" column="NM_MRHRC_GP" />
+        <property name="description" column="DE_MRHRC_GP" />
+        <property name="codMRHCer" column="CD_MRHRC_CER" />
+        <property name="porcentajeRecargo" column="PORC_REC" />
+        <many-to-one name="posDepartment" column="ID_DPT_PS" class="com.allc.entities.POSDepartment"
+                             cascade="save-update" />
+    </class>
+    <class name="com.allc.arms.server.persistence.item.ItemTmp" table="AS_ITM_TMP">
+        <id name="idItmTmp" column="ID_ITM_TMP">
+            <generator class="increment" />
+        </id>
+        <property name="idItm" column="ID_ITM" />
+        <property name="idBsnUn" column="ID_BSN_UN" />
+        <property name="fecha" column="FECHA" />
+        <property name="fechaDesde" column="FECHA_DESDE" />
+        <property name="fechaHasta" column="FECHA_HASTA" />
+        <property name="stock" column="STOCK" />
+        <property name="imagen" column="IMAGEN" />
+        <property name="imagenSm" column="IMAGEN_SM" />
+    </class>
+	
+	
+</hibernate-mapping>

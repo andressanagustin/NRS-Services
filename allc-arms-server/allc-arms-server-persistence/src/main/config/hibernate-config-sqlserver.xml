@@ -1,0 +1,25 @@
+<assembly>
+	<id>hibernate-config-sqlserver</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<fileSets>
+		<fileSet>
+			<directory>src/main/config/hibernate/sqlserver</directory>
+			<outputDirectory>/config</outputDirectory>
+			<includes>
+				<include>hibernateArts.cfg.xml</include>
+				<include>hibernateCotz.cfg.xml</include>
+				<include>hibernateCRM.cfg.xml</include>
+				<include>hibernateDevs.cfg.xml</include>
+				<include>hibernateFlejes.cfg.xml</include>
+				<include>hibernateOpera.cfg.xml</include>
+				<include>hibernateSaadmin.cfg.xml</include>
+				<include>hibernateCVMT.cfg.xml</include>
+				<include>hibernateEyes.cfg.xml</include>
+				<include>hibernateVector.cfg.xml</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</assembly>

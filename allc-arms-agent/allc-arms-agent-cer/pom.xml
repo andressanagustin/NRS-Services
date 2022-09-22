@@ -1,0 +1,86 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>alliances</groupId>
+    <artifactId>allc-arms-agent-cer</artifactId>
+    <version>0.0.2-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>allc-arms-agent-cer</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>alliances</groupId>
+            <artifactId>allc-arms-agent</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>alliances</groupId>
+            <artifactId>allc-arms-agent-processes-cer</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>alliances</groupId>
+            <artifactId>allc-arms-agent-operations-cer</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+    <!-- 	<build> -->
+    <!-- 		<plugins> -->
+    <!-- 			<plugin> -->
+    <!-- 				<groupId>org.apache.maven.plugins</groupId> -->
+    <!-- 				<artifactId>maven-compiler-plugin</artifactId> -->
+    <!-- 				<configuration> -->
+    <!-- 					<source>1.4</source> -->
+    <!-- 					<target>1.4</target> -->
+    <!-- 				</configuration> -->
+    <!-- 			</plugin> -->
+    <!-- 		</plugins> -->
+    <!-- 	</build> -->
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>config</id>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/config/build-config.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Class-Path>.</Class-Path>
+                        </manifestEntries>	
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>ArmsAgentNuo_lib/</classpathPrefix>
+                            <mainClass>com.allc.arms.agent.cer.ArmsAgentRunnerCER</mainClass>
+                            <!--                             <mainClass>com.allc.arms.agent.cer.pro.ArmsAgentRunnerCER</mainClass> -->
+                            <!--                             <mainClass>com.allc.arms.agent.cer.ope.ArmsAgentRunnerCER</mainClass> -->
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

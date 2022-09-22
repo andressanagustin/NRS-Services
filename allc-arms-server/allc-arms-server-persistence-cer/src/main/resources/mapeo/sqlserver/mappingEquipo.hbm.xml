@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+
+Copyright (c) 2008, 2016 Oracle and/or its affiliates. All rights reserved.
+
+Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+The contents of this file are subject to the terms of either the GNU
+General Public License Version 2 only ("GPL") or the Common
+Development and Distribution License("CDDL") (collectively, the
+"License"). You may not use this file except in compliance with the
+License. You can obtain a copy of the License at
+http://www.netbeans.org/cddl-gplv2.html
+or nbbuild/licenses/CDDL-GPL-2-CP. See the License for the
+specific language governing permissions and limitations under the
+License.  When distributing the software, include this License Header
+Notice in each file and include the License file at
+nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
+particular file as subject to the "Classpath" exception as provided
+by Oracle in the GPL Version 2 section of the License file that
+accompanied this code. If applicable, add the following below the
+License Header, with the fields enclosed by brackets [] replaced by
+your own identifying information:
+"Portions Copyrighted [year] [name of copyright owner]"
+
+If you wish your version of this file to be governed by only the CDDL
+or only the GPL Version 2, indicate your decision by adding
+"[Contributor] elects to include this software in this distribution
+under the [CDDL or GPL Version 2] license." If you do not indicate a
+single choice of license, a recipient has the option to distribute
+your version of this file under either the CDDL, the GPL Version 2 or
+to extend the choice of license to its licensees as provided above.
+However, if you add GPL Version 2 code and therefore, elected the GPL
+Version 2 license, then the option applies only if the new code is
+made subject to such option by the copyright holder.
+
+Contributor(s):
+-->
+<hibernate-mapping auto-import="false">
+    <class name="com.allc.arms.server.persistence.equipo.Equipo" table="FM_EQUIPO">
+
+        <id name="idEquipo" column="ID_EQUIPO">
+            <generator class="sequence">
+                <param name="sequence">fm_equipo_id_equipo_seq</param>
+            </generator>
+        </id>
+
+        <property name="desClave" column="DES_CLAVE" />
+        <property name="desEquipo" column="DES_EQUIPO" />
+        <property name="ip" column="IP" />
+        <property name="indOnline" column="IND_ONLINE" />
+        <property name="indActivo" column="IND_ACTIVO" />
+        <property name="idTipo" column="ID_TIPO" />
+        <property name="idLocal" column="ID_LOCAL" />
+        <property name="codUsuario" column="COD_USUARIO" />
+        <property name="fecActualizacion" column="FEC_ACTUALIZACION" />
+        <property name="idNegocio" column="ID_NEGOCIO" />
+        <property name="idTipoTerminal" column="ID_TIPO_TERMINAL" />
+    </class>
+    
+    <class name="com.allc.arms.server.persistence.json.JsonStorage" table="STR_JSON_STORAGE">
+        <id name="id" column="ID">
+            <generator class="native" />
+        </id>
+        <property name="store" column="STORE" />
+        <property name="upload" column="DT_UPLOAD" />
+    </class>
+        
+</hibernate-mapping>

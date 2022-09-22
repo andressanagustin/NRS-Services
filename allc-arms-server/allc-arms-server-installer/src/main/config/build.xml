@@ -1,0 +1,461 @@
+<project>
+
+	<property name="suite.home" value="C:\ALLC" />
+
+	<target name="serverConfig">
+		<echo message="Configurando Servidor" />
+
+		<condition property="windows32Bits">
+			<equals arg1="${windowsBits}" arg2="32" />
+		</condition>
+
+		<condition property="windows64Bits">
+			<equals arg1="${windowsBits}" arg2="64" />
+		</condition>
+
+		<antcall target="server64Config" />
+	</target>
+
+
+	<target name="server32Config" if="windows32Bits">
+
+		<echo message="Registrando Web Server (32 bits)" />
+		<delete dir="${suite.home}" />
+		<copy todir="${suite.home}/WWW/web_pgm" overwrite="true">
+			<fileset dir="${basedir}/Suite/web_pgm/32">
+			</fileset>
+		</copy>
+
+
+	</target>
+
+	<target name="server64Config" if="windows64Bits">
+
+		<echo message="Registrando Web Server (64 bits)" />
+		<delete dir="${suite.home}" />
+		<copy todir="${suite.home}/WWW/web_pgm" overwrite="true">
+			<fileset dir="${basedir}/Suite/web_pgm/64">
+			</fileset>
+		</copy>
+
+
+	</target>
+
+	<target name="suite">
+		<echo message="Instalando Suite" />
+		<copy todir="${suite.home}/WWW/allc_dat" overwrite="true">
+			<fileset dir="${basedir}/Suite/allc_dat">
+			</fileset>
+		</copy>
+		<copy todir="${suite.home}/WWW/allc_pgm" overwrite="true">
+			<fileset dir="${basedir}/Suite/allc_pgm">
+			</fileset>
+		</copy>
+
+		<replace dir="${suite.home}/WWW/allc_pgm/ActivaService/" value="${suite.home}/WWW/allc_pgm">
+			<include name="createService.bat" />
+			<replacetoken>$(activeServiceDir)</replacetoken>
+		</replace>
+		<echo message="Registrando Activa Service" />
+		<exec executable="${suite.home}/WWW/allc_pgm/ActivaService/createService.bat" dir="${suite.home}/WWW/allc_pgm/ActivaService/" />
+
+		<replace dir="${suite.home}/WWW/allc_pgm/Journal/" value="${suite.home}/WWW/allc_pgm">
+			<include name="createService.bat" />
+			<replacetoken>$(journalDir)</replacetoken>
+		</replace>
+		<echo message="Registrando Journal Service" />
+		<exec executable="${suite.home}/WWW/allc_pgm/Journal/createService.bat" dir="${suite.home}/WWW/allc_pgm/Journal/" />
+
+		<copy todir="${suite.home}/WWW/ARMS" overwrite="true">
+			<fileset dir="${basedir}/Suite/ARMS">
+			</fileset>
+		</copy>
+		<copy todir="${suite.home}/WWW/EYES" overwrite="true">
+			<fileset dir="${basedir}/Suite/EYES">
+			</fileset>
+		</copy>
+		<copy todir="${suite.home}/WWW" overwrite="true">
+			<fileset dir="${basedir}/Suite">
+				<include name="index.php" />
+				<include name="phpinfo.php" />
+				<include name="robots.txt" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="armsServer">
+		<echo message="Instalando Arms Server" />
+		<delete dir="${suite.home}/ArmsServer" />
+		<copy todir="${suite.home}/ArmsServer" overwrite="true">
+			<fileset dir="${basedir}/ArmsServer">
+				<include name="ArmsServer.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${suite.home}/ArmsServer/ArmsServer_lib" overwrite="true">
+			<fileset dir="${basedir}/ArmsServer/ArmsServer_lib">
+			</fileset>
+		</copy>
+		<copy todir="${suite.home}/ArmsServer" overwrite="true">
+			<fileset dir="${basedir}/ArmsServer/config">
+			</fileset>
+		</copy>
+
+		<condition property="installWindServ">
+			<equals arg1="${instServices}" arg2="true" />
+		</condition>
+
+	</target>
+
+	<target name="distributor">
+		<echo message="Instalando Distributor
+    		" />
+		<delete dir="${suite.home}/Distributor" />
+		<copy todir="${suite.home}/Distributor" overwrite="true">
+			<fileset dir="${basedir}/Distributor">
+				<include name="rs-transaction-distributor-db.jar" />
+			</fileset>
+		</copy>
+
+		<copy todir="${suite.home}/Distributor/rs-transaction-distributor-db_lib" overwrite="true">
+			<fileset dir="${basedir}/Distributor/rs-transaction-distributor-db_lib">
+			</fileset>
+		</copy>
+
+		<copy todir="${suite.home}/Distributor" overwrite="true">
+			<fileset dir="${basedir}/Distributor/config">
+			</fileset>
+		</copy>
+
+	</target>
+
+	<target name="EQServer">
+		<echo message="Instalando EQ Server" />
+		<delete dir="${suite.home}/EQ" />
+		<copy todir="${suite.home}/EQ" overwrite="true">
+			<fileset dir="${basedir}/EQ">
+			</fileset>
+		</copy>
+
+	</target>
+
+
+	<target name="windowsServices" if="installWindServ">
+		<echo message="Registrando Windows Services" />
+
+		<copy todir="${suite.home}/winrun4j" overwrite="true">
+			<fileset dir="${basedir}/winrun4j">
+			</fileset>
+		</copy>
+
+		<replace dir="${suite.home}/ArmsServer/" value="${suite.home}/winrun4j">
+			<include name="service32.bat" />
+			<replacetoken>$(winrun4jDir)</replacetoken>
+		</replace>
+
+		<replace dir="${suite.home}/ArmsServer/" value="${suite.home}/winrun4j">
+			<include name="service64.bat" />
+			<replacetoken>$(winrun4jDir)</replacetoken>
+		</replace>
+
+		<replace dir="${suite.home}/Distributor/" value="${suite.home}/winrun4j">
+			<include name="service32.bat" />
+			<replacetoken>$(winrun4jDir)</replacetoken>
+		</replace>
+
+		<replace dir="${suite.home}/Distributor/" value="${suite.home}/winrun4j">
+			<include name="service64.bat" />
+			<replacetoken>$(winrun4jDir)</replacetoken>
+		</replace>
+
+		<antcall target="windows32Services" />
+		<antcall target="windows64Services" />
+	</target>
+
+	<target name="windows32Services" if="windows32Bits">
+
+		<echo message="Registrando Arms Server Service (32 bits)" />
+		<exec executable="${suite.home}/ArmsServer/service32.bat" dir="${suite.home}/ArmsServer" />
+
+		<echo message="Registrando Distributor Service (32 bits)" />
+		<exec executable="${suite.home}/Distributor/service32.bat" dir="${suite.home}/Distributor" />
+
+		<echo message="Registrando Server EQ Service (32 bits)" />
+		<exec executable="${suite.home}/EQ/SEQ/service32.bat" dir="${suite.home}/EQ/SEQ" />
+
+		<echo message="Registrando Win EQ Service (32 bits)" />
+		<exec executable="${suite.home}/EQ/winEQ/service32.bat" dir="${suite.home}/EQ/winEQ" />
+
+	</target>
+
+	<target name="windows64Services" if="windows64Bits">
+
+		<echo message="Registrando Arms Server Service (64 bits)" />
+		<exec executable="${suite.home}/ArmsServer/service64.bat" dir="${suite.home}/ArmsServer" />
+
+		<echo message="Registrando Distributor Service (64 bits)" />
+		<exec executable="${suite.home}/Distributor/service64.bat" dir="${suite.home}/Distributor" />
+
+		<echo message="Registrando Server EQ Service (64 bits)" />
+		<exec executable="${suite.home}/EQ/SEQ/service64.bat" dir="${suite.home}/EQ/SEQ" />
+
+		<echo message="Registrando Win EQ Service (64 bits)" />
+		<exec executable="${suite.home}/EQ/winEQ/service64.bat" dir="${suite.home}/EQ/winEQ" />
+
+	</target>
+
+	<target name="createDB">
+		<echo message="Copiando Scripts de BD" />
+		<delete dir="${suite.home}/scripts" />
+
+		<copy todir="${suite.home}/" overwrite="true">
+			<fileset dir="${basedir}/scripts" />
+		</copy>
+
+		<replace dir="${suite.home}/scripts/" value="${datasource.host}">
+			<include name="run_all.bat" />
+			<replacetoken>$(serverName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/scripts/" value="${datasource.port}">
+			<include name="run_all.bat" />
+			<replacetoken>$(dbPort)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/scripts/" value="${datasource.instanceName}">
+			<include name="run_all.bat" />
+			<replacetoken>$(instanceName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/scripts/" value="${datasource.user}">
+			<include name="run_all.bat" />
+			<replacetoken>$(dbUser)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/scripts/" value="${datasource.pass}">
+			<include name="run_all.bat" />
+			<replacetoken>$(dbPass)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/scripts/" value="${suite.home}">
+			<include name="exec_all_scripts.sql" />
+			<replacetoken>$(suiteHome)</replacetoken>
+		</replace>
+		<delete dir="${suite.home}/DBDATA" />
+		<mkdir dir="${suite.home}/DBDATA" />
+		<exec executable="${suite.home}/scripts/run_all.bat" dir="${suite.home}/scripts/" />
+
+	</target>
+
+	<target name="fileConfig">
+		<echo message="Configurando Archivos." />
+
+
+		<replace dir="${suite.home}/ArmsServer" value="${store.code}">
+			<include name="ArmsServerConf.properties" />
+			<replacetoken>$(storeCode)</replacetoken>
+		</replace>
+
+		<replace dir="${suite.home}/WWW/allc_pgm" value="${store.code}">
+			<include name="syncron.conf" />
+			<replacetoken>$(storeCode)</replacetoken>
+		</replace>
+
+		<replace dir="${suite.home}/WWW/ARMS" value="${store.code}">
+			<include name="hostsaadmin.php" />
+			<replacetoken>$(storeCode)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/WWW/ARMS" value="${ip.central}">
+			<include name="hostsaadmin.php" />
+			<replacetoken>$(ipCentral)</replacetoken>
+		</replace>
+
+		<replace dir="${suite.home}/EQ/SEQ" value="${datasource.host}">
+			<include name="hibernate.cfg.xml" />
+			<replacetoken>$(serverName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/EQ/SEQ" value="${datasource.port}">
+			<include name="hibernate.cfg.xml" />
+			<replacetoken>$(dbPort)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/EQ/SEQ" value="${datasource.instanceName}">
+			<include name="hibernate.cfg.xml" />
+			<replacetoken>$(instanceName)</replacetoken>
+		</replace>
+
+		<replace dir="${suite.home}/Distributor" value="${datasource.host}">
+			<include name="hibernate.cfg.xml" />
+			<replacetoken>$(serverName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/Distributor" value="${datasource.port}">
+			<include name="hibernate.cfg.xml" />
+			<replacetoken>$(dbPort)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/Distributor" value="${datasource.instanceName}">
+			<include name="hibernate.cfg.xml" />
+			<replacetoken>$(instanceName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/Distributor" value="${datasource.host}">
+			<include name="hibernateCRM.cfg.xml" />
+			<replacetoken>$(serverName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/Distributor" value="${datasource.port}">
+			<include name="hibernateCRM.cfg.xml" />
+			<replacetoken>$(dbPort)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/Distributor" value="${datasource.instanceName}">
+			<include name="hibernateCRM.cfg.xml" />
+			<replacetoken>$(instanceName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/Distributor" value="${datasource.host}">
+			<include name="hibernateEYES.cfg.xml" />
+			<replacetoken>$(serverName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/Distributor" value="${datasource.port}">
+			<include name="hibernateEYES.cfg.xml" />
+			<replacetoken>$(dbPort)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/Distributor" value="${datasource.instanceName}">
+			<include name="hibernateEYES.cfg.xml" />
+			<replacetoken>$(instanceName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/Distributor" value="${datasource.host}">
+			<include name="hibernateDevs.cfg.xml" />
+			<replacetoken>$(serverName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/Distributor" value="${datasource.port}">
+			<include name="hibernateDevs.cfg.xml" />
+			<replacetoken>$(dbPort)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/Distributor" value="${datasource.instanceName}">
+			<include name="hibernateDevs.cfg.xml" />
+			<replacetoken>$(instanceName)</replacetoken>
+		</replace>
+
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.host}">
+			<include name="hibernateArts.cfg.xml" />
+			<replacetoken>$(serverName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.port}">
+			<include name="hibernateArts.cfg.xml" />
+			<replacetoken>$(dbPort)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.instanceName}">
+			<include name="hibernateArts.cfg.xml" />
+			<replacetoken>$(instanceName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.host}">
+			<include name="hibernateCotz.cfg.xml" />
+			<replacetoken>$(serverName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.port}">
+			<include name="hibernateCotz.cfg.xml" />
+			<replacetoken>$(dbPort)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.instanceName}">
+			<include name="hibernateCotz.cfg.xml" />
+			<replacetoken>$(instanceName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.host}">
+			<include name="hibernateCRM.cfg.xml" />
+			<replacetoken>$(serverName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.port}">
+			<include name="hibernateCRM.cfg.xml" />
+			<replacetoken>$(dbPort)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.instanceName}">
+			<include name="hibernateCRM.cfg.xml" />
+			<replacetoken>$(instanceName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.host}">
+			<include name="hibernateCVMT.cfg.xml" />
+			<replacetoken>$(serverName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.port}">
+			<include name="hibernateCVMT.cfg.xml" />
+			<replacetoken>$(dbPort)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.instanceName}">
+			<include name="hibernateCVMT.cfg.xml" />
+			<replacetoken>$(instanceName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.host}">
+			<include name="hibernateDevs.cfg.xml" />
+			<replacetoken>$(serverName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.port}">
+			<include name="hibernateDevs.cfg.xml" />
+			<replacetoken>$(dbPort)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.instanceName}">
+			<include name="hibernateDevs.cfg.xml" />
+			<replacetoken>$(instanceName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.host}">
+			<include name="hibernateEyes.cfg.xml" />
+			<replacetoken>$(serverName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.port}">
+			<include name="hibernateEyes.cfg.xml" />
+			<replacetoken>$(dbPort)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.instanceName}">
+			<include name="hibernateEyes.cfg.xml" />
+			<replacetoken>$(instanceName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.host}">
+			<include name="hibernateFlejes.cfg.xml" />
+			<replacetoken>$(serverName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.port}">
+			<include name="hibernateFlejes.cfg.xml" />
+			<replacetoken>$(dbPort)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.instanceName}">
+			<include name="hibernateFlejes.cfg.xml" />
+			<replacetoken>$(instanceName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.host}">
+			<include name="hibernateOpera.cfg.xml" />
+			<replacetoken>$(serverName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.port}">
+			<include name="hibernateOpera.cfg.xml" />
+			<replacetoken>$(dbPort)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.instanceName}">
+			<include name="hibernateOpera.cfg.xml" />
+			<replacetoken>$(instanceName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.host}">
+			<include name="hibernateSaadmin.cfg.xml" />
+			<replacetoken>$(serverName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.port}">
+			<include name="hibernateSaadmin.cfg.xml" />
+			<replacetoken>$(dbPort)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.instanceName}">
+			<include name="hibernateSaadmin.cfg.xml" />
+			<replacetoken>$(instanceName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.host}">
+			<include name="hibernateVector.cfg.xml" />
+			<replacetoken>$(serverName)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.port}">
+			<include name="hibernateVector.cfg.xml" />
+			<replacetoken>$(dbPort)</replacetoken>
+		</replace>
+		<replace dir="${suite.home}/ArmsServer" value="${datasource.instanceName}">
+			<include name="hibernateVector.cfg.xml" />
+			<replacetoken>$(instanceName)</replacetoken>
+		</replace>
+
+		<move todir="${suite.home}/WWW/allc_dat/in/${store.code}">
+			<fileset dir="${suite.home}/WWW/allc_dat/in/XXX" />
+		</move>
+		<delete dir="${suite.home}/WWW/allc_dat/in/XXX" />
+
+		<move todir="${suite.home}/WWW/allc_dat/out/${store.code}">
+			<fileset dir="${suite.home}/WWW/allc_dat/out/XXX" />
+		</move>
+		<delete dir="${suite.home}/WWW/allc_dat/out/XXX" />
+
+	</target>
+</project>

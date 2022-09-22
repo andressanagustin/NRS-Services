@@ -1,0 +1,30 @@
+<assembly>
+	<id>config</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>/ArmsServer_lib</outputDirectory>
+			<unpack>false</unpack>
+			<scope>runtime</scope>
+		</dependencySet>
+	</dependencySets>
+	<fileSets>
+		<fileSet>
+			<directory>src/main/config</directory>
+			<outputDirectory>/config</outputDirectory>
+			<includes>
+				<include>ArmsServerConf.properties</include>
+				<include>log4jArmsServerConf.properties</include>
+				<include>service32.exe</include>
+				<include>service32.ini</include>
+				<include>service32.bat</include>
+				<include>service64.exe</include>
+				<include>service64.ini</include>
+				<include>service64.bat</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</assembly>

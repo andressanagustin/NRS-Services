@@ -1,0 +1,109 @@
+USE DEVS_EC
+GO
+
+  CREATE TABLE DV_ARTS 
+   (	
+	[ID_ARTS] [int] IDENTITY(1,1) NOT NULL,
+	[ID_DEV] [int] NOT NULL,
+	[QU_ITM_DEV] [int] NOT NULL DEFAULT ((0)),
+	[AI_LN_ITM] [int] NOT NULL DEFAULT ((0)),
+	[MO_PTS] [int] NULL DEFAULT ((0)),
+	[COD_LINEA] [int] NULL DEFAULT ((0)),
+	PRIMARY KEY (ID_ARTS)
+   )
+   
+  CREATE UNIQUE INDEX DV_ARTS_PK ON DV_ARTS (ID_ARTS) 
+   
+  
+  CREATE TABLE [dbo].[DV_ESTADO](
+	[ID_ESTADO] [int] IDENTITY(1,1) NOT NULL,
+	[NM_ESTADO] [varchar](50) NULL,
+	PRIMARY KEY (ID_ESTADO)
+	)
+	
+	
+  CREATE TABLE [dbo].[DV_TICKET](
+	[ID_DEV] [int] IDENTITY(1,1) NOT NULL,
+	[ID_TRN] [int] NOT NULL,
+	[TY_DEV] [int] NOT NULL,
+	[ID_BSN_DEV] [int] NOT NULL,
+	[ID_WS_DEV] [int] NOT NULL DEFAULT ((0)),
+	[ID_ESTADO] [int] NOT NULL CONSTRAINT [DF_DV_TICKET_ID_ESTADO]  DEFAULT ((0)),
+	[TS_DEV] [datetime] NOT NULL DEFAULT (sysdatetimeoffset()),
+	[ID_REG] [int] NOT NULL CONSTRAINT [DF_DV_TICKET_ID_REG]  DEFAULT ((0)),
+	[NUM_NC] [int] NOT NULL DEFAULT ((0)),
+	[NOTA] [varchar](20) NULL,
+	[MO_DEV] decimal(14,3) NULL DEFAULT ((0)),
+	MO_SUB decimal(14,3) DEFAULT 0,
+	MO_TAX decimal(14,3) DEFAULT 0,
+	MO_DES decimal(14,3) DEFAULT 0,
+	FL_DEVTOT int DEFAULT 0,
+	PRIMARY KEY (ID_DEV)
+  )
+  
+  CREATE TABLE [dbo].[DV_TIPOD](
+	[ID_TIPOD] [int] IDENTITY(1,1) NOT NULL,
+	[NM_TIPOD] [varchar](50) NULL,
+	[AC_TIPOD] [int] NOT NULL DEFAULT ((0)),
+	PRIMARY KEY (ID_TIPOD)
+  )
+  
+  CREATE TABLE DV_PCER (
+	ID_DEV [int] NOT NULL,
+	SQ_NMB [int] NOT NULL,
+	ESTADO  [int] NOT NULL DEFAULT ((0)),
+	RESP_CODE VARCHAR(2) NULL,
+	PRIMARY KEY (ID_DEV, SQ_NMB)
+  )
+  
+  CREATE TABLE DV_GFCD(
+	[ID_DEV] [int] NOT NULL,
+	[ESTADO] [int] NOT NULL DEFAULT ((0)),
+	[BIN_GFC] [int] NULL,
+	[RESP_CODE] [varchar](2) NULL,
+	CRD_NBR	VARCHAR(16),
+	AMNT	int NULL,
+	REF_NBR VARCHAR(6),
+	AUT_NBR VARCHAR(6),
+	TM VARCHAR(6),
+	PRIMARY KEY (ID_DEV)
+  )
+  
+  CREATE TABLE DV_ILIM(
+	[ID_DEV] [int] NOT NULL,
+	[RESP_CODE_CTA] [varchar](2) NULL,
+	[RESP_CODE_REV] [varchar](2) NULL,
+	PRIMARY KEY (ID_DEV)
+  )
+  
+ CREATE TABLE [dbo].[DV_TMPITM](
+	[ID_TRN] [int] NOT NULL,
+	[AI_LN_ITM] [int] NOT NULL,
+	[ID_ITM] [int] NOT NULL,
+	[MO_PRC_REG] [decimal](14, 3) NOT NULL DEFAULT 0,
+	[MO_EXTND] [decimal](14, 3) NOT NULL DEFAULT 0,
+	[QU_ITM_LM_RTN_SLS] [decimal](9, 2) NOT NULL DEFAULT 0,
+	[QU_UN] [decimal](9, 2) NOT NULL DEFAULT 0,
+	[MO_TX] [int] NOT NULL DEFAULT 0,
+	[MO_PRM] [decimal](14, 3) NOT NULL DEFAULT 0,
+	[MO_PTS] [int] NOT NULL DEFAULT 0,
+	[COD_LINEA] [int] NOT NULL DEFAULT 0,
+	[ID_DEV] [int] NULL,
+	PTS_EXT int NULL default 0,
+	MO_DEM decimal(14,3) default 0,
+	ORDL_NBR int DEFAULT 0,
+	FL_MAY [int] NOT NULL DEFAULT 0,
+	MO_DMY decimal(14,3) NOT NULL DEFAULT 0
+  ) 
+  
+  CREATE TABLE [dbo].[DV_TMPTRN](
+	[ID_TRN] [int] NOT NULL,
+	[ID_REG] [int] NOT NULL,
+	[ID_DEV] [int] NULL,
+	[ID_ESTADO] [int] NULL DEFAULT ((0))
+  )
+  
+ ;
+  
+  
+  

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<!-- Parval -->
+	<class name="com.allc.arms.server.params.ParamValue" table="PM_PARVAL">
+		<id name="id" column="ID_PARVAL">
+			 <generator class="sequence">
+				<param name="sequence">pm_parval_id_parval_seq</param>
+			 </generator>
+		 </id>
+		<property name="valor" column="VAL_PARAM" />
+		<property name="tienda" column="DES_CLAVE" />
+		<property name="estado" column="ESTADO" />
+		<property name="nivelGrupo" column="ID_BSN_UN_GP" />
+		<many-to-one name="param" column="COD_PARAM" class="com.allc.arms.server.params.Param"
+			cascade="save-update" />
+	</class>
+	
+	<!-- Param -->
+	<class name="com.allc.arms.server.params.Param" table="PM_PARAM">
+		<id name="codigo" column="COD_PARAM">
+			<generator class="native" />
+		</id>
+		<property name="descripcion" column="DES_PARAM" />
+		<property name="clave" column="VAR_PARAM" />
+		<property name="ambito" column="AMBITO" />
+	</class>
+	
+</hibernate-mapping>

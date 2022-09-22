@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<!-- Conciliacion -->
+	<class name="com.allc.arms.server.persistence.conciliacion.Conciliacion" table="CFG_CN_CNF">
+		<id name="id" column="ID_CN_CNF">
+			<generator class="native" />
+		</id>
+		<property name="proveedorName" column="SPR_NM" />
+		<property name="codTienda" column="DES_CLAVE" />
+		<property name="lastConciliacionDate" column="LST_CN_DATE" />
+
+	</class>
+	
+</hibernate-mapping>

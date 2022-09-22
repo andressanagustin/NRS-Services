@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<!-- RESERVAS -->
+	<class name="com.allc.entities.Reserva" table="CO_RESERVA">
+	  		
+  		<id name="idReserva" column="ID_RSV">
+			<generator class="native" />
+		</id>
+
+		<property name="itemID" column="ID_ITM" />
+		<property name="retailStoreID" column="ID_BSN_UN" />
+		<property name="codReserva" column="CD_RSV" />
+		<property name="fechaDesde" column="FECHA_DSD" />
+		<property name="fechaHasta" column="FECHA_HST" />
+		<property name="numSerie" column="NUM_SERIE" />
+		<property name="rsvUsada" column="FL_RSV_USED" />
+		
+	</class>
+	
+</hibernate-mapping>

@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+ <session-factory>
+  <!-- Database connection settings -->
+  <property name="connection.driver_class">org.postgresql.Driver</property>
+  <property name="connection.url">jdbc:postgresql://172.16.185.135:5432/NRS?currentSchema=eyes_ec</property>
+  <property name="connection.username">postgres</property>
+  <property name="connection.password">postgres</property>
+  
+		    
+  <!-- Otras propiedades importantes -->
+  <property name="show_sql">false</property>
+		    
+  <property name="motor.db">postgresql</property>
+     
+   	
+ </session-factory>
+  
+</hibernate-configuration>

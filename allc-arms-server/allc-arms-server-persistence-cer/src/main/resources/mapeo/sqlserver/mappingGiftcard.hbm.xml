@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<class name="com.allc.arms.server.persistence.devolucion.Giftcard" table="DV_GFCD">
+		<id name="id" column="ID_DEV">
+			<generator class="assigned" />
+		</id>
+		<property name="estado" column="ESTADO" />
+		<property name="responseCode" column="RESP_CODE" />
+		<property name="cardNumber" column="CRD_NBR" />
+		<property name="amount" column="AMNT" />
+		<property name="referenceNumber" column="REF_NBR" />
+		<property name="authorizationNumber" column="AUT_NBR" />
+		<property name="time" column="TM" />
+	</class>
+	
+	<class name="com.allc.arms.server.persistence.devolucion.Ilimitada" table="DV_ILIM">
+		<id name="id" column="ID_DEV">
+			<generator class="assigned" />
+		</id>
+		<property name="responseCodeConsulta" column="RESP_CODE_CTA" />
+		<property name="responseCodeReverso" column="RESP_CODE_REV" />
+	</class>
+
+	<class name="com.allc.arms.server.persistence.devolucion.PagoCer" table="DV_PCER">
+		<composite-id>
+			<key-property name="id" column="ID_DEV" />
+			<key-property name="sequenceNumber" column="SQ_NMB" />
+		</composite-id>
+		<property name="estado" column="ESTADO" />
+		<property name="responseCode" column="RESP_CODE" />
+	</class>
+	
+</hibernate-mapping>

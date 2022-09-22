@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+	
+	<!--###########	TIENDA	###########-->
+
+	<class name="com.allc.entities.Tienda" table="MN_TIENDA">
+
+		<id name="codTienda" column="COD_TIENDA">
+			<generator class="native" />
+		</id>
+
+		<property name="desClave" column="DES_CLAVE" />
+		<property name="ip" column="IP" />
+	</class>
+	
+</hibernate-mapping>

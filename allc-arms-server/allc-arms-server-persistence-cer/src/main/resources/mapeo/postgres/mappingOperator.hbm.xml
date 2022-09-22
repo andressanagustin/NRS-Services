@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<!-- OPERATOR -->
+	<class name="com.allc.arms.server.persistence.operator.Operator"
+		table="OP_OPERADOR">
+		<id name="operadorId" column="ID_OPERADOR">
+			<generator class="native" />
+		</id> 
+		<!--<id name="operadorId" column="ID_OPERADOR">
+			<generator class="sequence">
+				<param name="sequence">op_operador_id_operador_seq</param>
+			</generator>
+		</id>-->
+		
+		<property name="name" column="NOMBRE" />
+		<property name="apellidoM" column="APELLIDO_M" />
+		<property name="apellidoP" column="APELLIDO_P" />
+		<property name="nameAce" column="NOMB_ACE" />
+		<property name="operatorBirthDate" column="FECHA_NAC" />
+		<property name="status" column="STR_ESTADO" />
+		<property name="subscribe" column="REG_ESTADO" />
+		<property name="identityDocument" column="CC_OPERADOR" />
+		<property name="ipTienda" column="IP_TIENDA" />
+		<property name="ipTiendaAnt" column="IP_TIENDA_ANT" />
+		<property name="codTienda" column="COD_TIENDA" />
+		<property name="codTiendaAnt" column="COD_TIENDA_ANT" />
+		<property name="codNegocio" column="COD_NEGOCIO" />
+		<property name="codNegocioAnt" column="COD_NEGOCIO_ANT" />
+		<property name="grupo" column="NVA_GRUPO" />
+		<property name="usuario" column="NVA_USUARIO" />
+		<property name="nivelAut" column="NIVEL_AUT" />
+		<property name="idModOpera" column="ID_MODOPERA" />
+		<property name="idReg" column="IDREG" />
+		<property name="iniciales" column="INICIALES_OP" />
+		<property name="indSegMejorada" column="IND_SEG_MEJ" />
+		<property name="idModOperaSO" column="ID_MODOPERASO" />
+		<property name="download" column="DOWNLOAD" />
+		<bag name="authorizations" cascade="save-update" inverse="true">
+			<key column="ID_OPERADOR" />
+			<one-to-many
+				class="com.allc.arms.server.persistence.operator.AuthorizesOPC" />
+		</bag>
+		<bag name="levelAuthorizations" cascade="save-update" inverse="true">
+			<key column="ID_OPERADOR" />
+			<one-to-many
+				class="com.allc.arms.server.persistence.operator.LevelAuthorizes" />
+		</bag>
+		<bag name="tiendas" cascade="save-update" inverse="true">
+			<key column="ID_OPERADOR" />
+			<one-to-many
+				class="com.allc.arms.server.persistence.operator.OperatorStore" />
+		</bag>
+	</class>
+
+	<!-- AUTHORIZES OPC -->
+	<class name="com.allc.arms.server.persistence.operator.AuthorizesOPC"
+		table="OP_OPERAMDA">
+		<composite-id>
+			<key-property name="idOperador" column="ID_OPERADOR" />
+<!-- 			<key-property name="idIndicatOpc" column="ID_INDICATOPC" /> -->
+			<key-property name="idIndicat" column="ID_INDICAT" />
+			<key-many-to-one name="indicatOPC" column="ID_INDICATOPC"
+				class="com.allc.arms.server.persistence.operator.IndicatOPC" />
+		</composite-id>
+		<property name="value" column="VALUE" />
+<!-- 		<many-to-one name="indicatOPC" class="com.allc.arms.server.persistence.operator.IndicatOPC" -->
+<!-- 			cascade="save-update"> -->
+<!-- 			<column name="ID_INDICATOPC" /> -->
+<!-- 		</many-to-one> -->
+	</class>
+	
+	<!-- LEVEL AUTHORIZES -->
+	<class name="com.allc.arms.server.persistence.operator.LevelAuthorizes"
+		table="OP_OPERANVA">
+		<composite-id>
+			<key-property name="idOperador" column="ID_OPERADOR" />
+			<key-property name="idNvautoriza" column="ID_NVLAUTO" />
+		</composite-id>
+		<property name="value" column="VALUE" />
+	</class>
+
+	<!-- INDICAT OPC -->
+	<class name="com.allc.arms.server.persistence.operator.IndicatOPC"
+		table="OP_INDICATOPC">
+		<id name="idIndicatOPC" column="ID_INDICATOPC">
+			<generator class="native" />
+		</id>
+		<property name="bitPos" column="BITPOS" />
+		<many-to-one name="indicat" column="ID_INDICAT"
+			class="com.allc.arms.server.persistence.operator.Indicat" cascade="save-update" />
+	</class>
+
+	<!-- INDICAT -->
+	<class name="com.allc.arms.server.persistence.operator.Indicat"
+		table="OP_INDICAT">
+		<id name="idIndicat" column="ID_INDICAT">
+			<generator class="native" />
+		</id>
+		<property name="indicat" column="INDICAT" />
+	</class>
+	
+	<!-- OPERATOR STORE -->
+	<class name="com.allc.arms.server.persistence.operator.OperatorStore"
+		table="OP_OPETND">
+		<composite-id>
+			<key-property name="operadorId" column="ID_OPERADOR" />
+			<key-property name="codTienda" column="COD_TIENDA" />
+		</composite-id>
+		<property name="ipTienda" column="IP_TIENDA" />
+		<property name="status" column="STR_ESTADO" />
+		<property name="subscribe" column="REG_ESTADO" />
+		<property name="fecha" column="FECHA" />
+		<property name="download" column="DOWNLOAD" />
+	</class>
+	
+</hibernate-mapping>

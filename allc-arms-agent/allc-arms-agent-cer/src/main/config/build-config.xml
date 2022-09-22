@@ -1,0 +1,24 @@
+<assembly>
+	<id>config</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>/ArmsAgent_lib</outputDirectory>
+			<unpack>false</unpack>
+			<scope>runtime</scope>
+		</dependencySet>
+	</dependencySets>
+	<fileSets>
+		<fileSet>
+			<directory>src/main/config</directory>
+			<outputDirectory>/config</outputDirectory>
+			<includes>
+				<include>ArmsAgentConf.properties</include>
+				<include>log4jArmsAgentConf.properties</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</assembly>

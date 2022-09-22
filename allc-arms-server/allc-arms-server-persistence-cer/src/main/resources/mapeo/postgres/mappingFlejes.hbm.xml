@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<!-- ITEM -->
+	<class name="com.allc.arms.server.persistence.fleje.Fleje" table="ARC_PRC">
+		<id name="flejesId" column="ID_ARCPRC">
+			<generator class="native" />
+		</id>
+		<property name="name" column="NOM_ARCPRC" />
+		<property name="numItems" column="NUM_ITEMS" />
+		<property name="store" column="COD_TIENDA" />
+		<property name="status" column="ID_ESTPRC" />
+		<property name="lote" column="NOM_ARCLOTE" />
+		<property name="codNegocio" column="COD_NEGOCIO" />
+		<property name="codDepto" column="ID_DPT_PS" />
+		
+		<many-to-one name="archivo" column="ID_ARCSAP" class="com.allc.arms.server.persistence.fleje.ArchivoSAP"
+			cascade="save-update" />
+			
+		<!-- Archivo de excepciones -->
+		<one-to-one name="archivoException" class="com.allc.arms.server.persistence.fleje.ArchivoException"
+			cascade="save-update">
+		</one-to-one>
+
+		<bag name="archivoImpList" cascade="save-update" inverse="true">
+			<key column="ID_ARCPRC" />
+			<one-to-many class="com.allc.arms.server.persistence.fleje.ArchivoImp" />
+		</bag>
+	</class>
+	
+	<!-- Archivo Impresion -->
+	<class name="com.allc.arms.server.persistence.fleje.ArchivoImp" table="ARC_ITEMS">
+		<id name="idArchivoImp" column="ID_ARCITEM">
+			<generator class="native" />
+		</id>
+		<property name="flejesId" column="ID_ARCPRC" />
+		<property name="estado" column="ESTADO" />
+		<property name="archivo" column="ARCHIVO" />
+	</class>
+	
+	<!-- Archivo SAP -->
+	<class name="com.allc.arms.server.persistence.fleje.ArchivoSAP" table="ARC_SAP">
+		<id name="id" column="ID_ARCSAP">
+			<generator class="native" />
+		</id>
+		<property name="codTienda" column="COD_TIENDA" />
+		<property name="numLote" column="NUM_LOTE" type="long"/>
+		<property name="nombreItem" column="ARCITEM" />
+		<property name="numItems" column="NUM_ITEM" />
+		<property name="nombreEan" column="ARCEAN" />
+		<property name="numEans" column="NUM_EAN" />
+		<property name="nombreErri" column="ARCERRI" />
+		<property name="numErris" column="NUM_ERRI" />
+		<property name="nombreErre" column="ARCERRE" />
+		<property name="numErres" column="NUM_ERRE" />
+		<property name="status" column="ID_ESTPRC" />
+	</class>
+	
+	<!-- Archivo Exception -->
+	<class name="com.allc.arms.server.persistence.fleje.ArchivoException" table="ARC_PRCEX">
+		<id name="flejeId" column="ID_ARCPRC">
+			<generator class="foreign">
+				<param name="property">fleje</param>
+			</generator>
+		</id>
+		<property name="nombre" column="NOM_ARCEX" />
+		<property name="numItems" column="NUM_ITEMS" />
+		<!-- Archivo de fleje -->
+		<one-to-one name="fleje" class="com.allc.arms.server.persistence.fleje.Fleje"
+			constrained="true">
+		</one-to-one>
+	</class>
+	
+		<!-- ITEM BALANZA -->
+	<class name="com.allc.entities.ItemBalanza" table="ARTICBALANZA">
+		<composite-id>
+			<key-property name="articulo" column="ARTICULO" />
+			<key-property name="des_clave" column="DES_CLAVE" />
+		</composite-id>
+		<property name="descripcion" column="DESCRIPCION" />
+		<property name="precio_pub" column="PRECIO_PUB" />
+		<property name="precio_com" column="PRECIO_COM" />
+		<property name="porc_recargo" column="PORC_RECARGO" />
+		<property name="ind_iva" column="IND_IVA" />
+		<property name="ind_al_peso" column="IND_AL_PESO" />
+		<property name="cod_seccion" column="COD_SECCION" />
+		<property name="cod_subsec" column="COD_SUBSEC" />
+		<property name="jerarquia_sap" column="JERARQUIA_SAP" />
+		<property name="nombre_grupo" column="NOMBRE_GRUPO" />
+		<property name="fch_ult_cambio" column="FCH_ULT_CAMBIO" />
+		<property name="dias_refriger" column="DIAS_REFRIGER" />
+		<property name="dias_congelac" column="DIAS_CONGELAC" />
+		<property name="ind_empacado" column="IND_EMPACADO" />
+		<property name="procesado" column="PROCESADO" />
+	</class>
+	
+</hibernate-mapping>

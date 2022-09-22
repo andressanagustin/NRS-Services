@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+    <!-- Parval -->
+    <class name="com.allc.arms.server.persistence.store.Store" table="MN_TIENDA" lazy="false">
+        <id name="storeId" column="COD_TIENDA">
+            <generator class="sequence">
+                <param name="sequence">mn_tienda_cod_tienda_seq</param>
+            </generator>
+        </id>
+        <property name="name" column="DES_TIENDA" />
+        <property name="key" column="DES_CLAVE" />
+        <property name="address" column="DIRECCION" />
+        <property name="regionCode" column="COD_REGION" />
+        <property name="cityCode" column="COD_CIUDAD" />
+        <property name="ip" column="IP" />
+        <property name="status" column="IND_ACTIVO" />
+        <property name="idReg" column="IDREG" />
+        <property name="lastUpdate" column="FECHA" />
+        <property name="codCanton" column="COD_CANTON" />
+        <property name="codProvincia" column="COD_PROVINCIA" />
+        <property name="rucTienda" column="RUC_TIENDA" />
+        <property name="codSri" column="COD_SRI" />
+        <property name="localServer" column="FL_LCL_SRVR" />
+        <property name="paDivision" column="PA_DIVISION" />
+        <property name="paCiudad" column="PA_CIUDAD" />
+        <property name="latitud" column="LATITUD" />
+        <property name="longitud" column="LONGITUD" />
+        <property name="idBsnUnGp" column="ID_BSN_UN_GP" />
+        <property name="ipWsNotifSuperv" column="ip_ws_notif_superv" />
+        <property name="EstIniLoadOpe" column="ini_opera_estado" />	
+        <property name="FecEstIniLoadOpe" column="FECINIOPERAESTADO" />	
+        <property name="downloadLog" column="FL_TRAER_LOG" />
+        <property name="desClaveDownload" column="DES_CLAVE_TRAER_LOG" />
+        <property name="pgSync" column="PG_SYNC" />
+        <property name="progressIniLoadOpe" column="PROGRESO_OPERA_ESTADO" />
+        <property name="statusDownload" column="STATUS_DOWNLOAD" />
+    </class>
+	
+    <class name="com.allc.arms.server.persistence.store.BusinessStore" table="MN_NEGTND">
+        <composite-id>
+            <key-property name="businessId" column="COD_NEGOCIO" />
+            <key-property name="storeId" column="COD_TIENDA" />
+        </composite-id>
+    </class>
+
+    <class name="com.allc.arms.server.persistence.server.Server" table="MN_SRV">
+        <id name="id_srv" column="id_srv">
+            <generator class="native" />
+        </id>
+        <property name="detalle" column="detalle" />
+        <property name="ip" column="ip" />
+        <property name="primario_app" column="primario_app" />
+        <property name="primario_bd" column="primario_bd" />
+        <property name="regional" column="regional" />
+        <property name="central" column="central" />
+        <property name="idNodo" column="id_nodo" />
+        <property name="id_srv_prn_chl" column="id_srv_prn_chl" />
+        <property name="id_bsn_un_gp" column="id_bsn_un_gp" />
+        <property name="estado" column="estado" />
+    </class>
+	
+	<class name="com.allc.arms.server.persistence.server.ServerRelation" table="MN_SRV_SRV">
+        <id name="id_srv_srv" column="id_srv_srv">
+            <generator class="native" />
+        </id>
+        <property name="id_srv_a" column="id_srv_a" />
+        <property name="id_srv_b" column="id_srv_b" />
+        <property name="estado" column="estado" />
+    </class>
+    
+</hibernate-mapping>

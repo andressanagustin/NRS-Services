@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+ <session-factory>
+  <!-- Database connection settings -->
+  <property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+  <property name="connection.url">jdbc:sqlserver://$(serverName):$(dbPort);databaseName=CVMT_EC;instance=$(instanceName);</property>
+  <property name="connection.username">CVMT_EC</property>
+  <property name="connection.password">CVMT_EC</property>
+  
+  <!-- SQL dialect -->
+  <property name="dialect">org.hibernate.dialect.SQLServerDialect</property>  
+
+  <!-- Echo all executed SQL to stdout -->
+  <property name="hibernate.show_sql">false</property>
+  <property name="hibernate.format_sql">false</property>
+  <property name="hibernate.use_sql_comments">false</property>
+  <property name="motor.db">sqlserver</property>
+     
+  <mapping resource="mapeo/sqlserver/mappingCartaMoto.hbm.xml"/>
+  
+ </session-factory>
+  
+</hibernate-configuration>

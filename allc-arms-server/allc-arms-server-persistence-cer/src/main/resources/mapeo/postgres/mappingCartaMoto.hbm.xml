@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<!-- MOTO FILE -->
+	<class name="com.allc.arms.server.persistence.moto.carta.CartaMoto" table="CM_CARTAS">
+		<id name="idCarta" column="ID_CARTA">
+			<generator class="native" />
+		</id>
+		<property name="idTrx" column="ID_TRN" />
+		<property name="fechaCreacion" column="FECHA_C" />
+		<property name="estado" column="ESTADO" />
+		<property name="serie" column="SRL_NBR" />
+		<property name="gerente" column="CC_OPERADOR" />
+		<property name="tienda" column="DES_CLAVE" />
+		<property name="fechaAceptacion" column="FECHA_E" />
+		<property name="nombArchXML" column="NOMBXML" />
+		
+		
+	</class>
+</hibernate-mapping>

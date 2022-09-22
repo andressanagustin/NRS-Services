@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+    <class name="com.allc.arms.server.persistence.store.horas.StoreTime" table="HORA_TIENDAS">
+        <id name="id" column="ID_HORA_TIENDA">
+            <generator class="native" />
+        </id>
+        <property name="idLocal" column="ID_LOCAL" />
+        <property name="startDate" column="START_DATE" />
+        <property name="endDate" column="END_DATE" />
+        <property name="days" column="WEEKDAYS" />
+        <property name="minutos" column="MINUTOS" />
+        <property name="modificado" column="MODIFICADO" />
+    </class>
+	
+</hibernate-mapping>

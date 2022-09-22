@@ -1,0 +1,1401 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<!--########### TRANSACTION ########### -->
+
+	<class name="com.allc.entities.Transaction" table="TR_TRN">
+
+		<id name="transactionID" column="ID_TRN">
+			<generator class="native" />
+		</id>
+
+		<property name="businessDayDate" column="DC_DY_BSN" />
+		<property name="period" column="ID_CLD_PRD" />
+		<property name="subperiod" column="ID_CLD_SUB_PRD" />
+		<property name="sequenceNumber" column="AI_TRN" />
+		<property name="transactionTypeCode" column="TY_TRN" />
+		<property name="beginDateTime" column="TS_TRN_BGN" />
+		<property name="endDateTime" column="TS_TRN_END" />
+		<property name="cancelFlag" column="FL_CNCL" />
+		<property name="voidedFlag" column="FL_VD" />
+		<property name="suspendedFlag" column="FL_SPN" />
+		<property name="trainingModeFlag" column="FL_TRG_TRN" />
+		<property name="keyedOfflineFlag" column="FL_KY_OFL" />
+
+		<many-to-one name="operator" class="com.allc.entities.Operator"
+			cascade="save-update">
+			<column name="ID_OPR" />
+		</many-to-one>
+
+		<many-to-one name="workstation" class="com.allc.entities.Workstation"
+			cascade="save-update">
+			<column name="ID_WS" />
+		</many-to-one>
+
+		<many-to-one name="retailStore" class="com.allc.entities.RetailStore"
+			cascade="save-update" not-null="true">
+			<column name="ID_BSN_UN" />
+		</many-to-one>
+
+		<!-- RETAIL TRANSACTION -->
+		<one-to-one name="retailTransaction" class="com.allc.entities.RetailTransaction"
+			cascade="save-update">
+		</one-to-one>
+		<!-- CONTROL TRANSACTION -->
+		<one-to-one name="controlTransaction" class="com.allc.entities.ControlTransaction"
+			cascade="save-update">
+		</one-to-one>
+		<!-- TENDER CONTROL TRANSACTION -->
+		<one-to-one name="tenderControlTransaction"
+			class="com.allc.entities.TenderControlTransaction" cascade="save-update">
+		</one-to-one>
+	</class>
+
+	<!-- TENDER CONTROL TRANSACTION -->
+	<class name="com.allc.entities.TenderControlTransaction" table="TR_CTL_TND">
+		<id name="transactionID" column="id_trn">
+			<generator class="assigned">
+			</generator>
+		</id>
+
+		<property name="tenderControlTypeCode" column="TY_TND_CTL" />
+		<property name="reasonCode" column="CD_RSN" />
+
+		<!-- TENDER LOAN -->
+		<one-to-one name="loan" class="com.allc.entities.TenderLoanTransaction"
+			cascade="save-update">
+		</one-to-one>
+		<!-- TENDER PICKUP -->
+		<one-to-one name="pickup"
+			class="com.allc.entities.TenderPickupTransaction" cascade="save-update">
+		</one-to-one>
+		<!-- TENDER COUNT -->
+		<one-to-one name="count" class="com.allc.entities.TenderCountTransaction"
+			cascade="save-update">
+		</one-to-one>
+		<!-- TENDER DEPOSIT -->
+		<one-to-one name="deposit"
+			class="com.allc.entities.TenderDepositTransaction" cascade="save-update">
+		</one-to-one>
+		<!-- TENDER RECEIPT -->
+		<one-to-one name="receipt"
+			class="com.allc.entities.TenderReceiptTransaction" cascade="save-update">
+		</one-to-one>
+
+		<bag name="lineItems" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.TenderControlTransactionLineItem" />
+		</bag>
+		
+		<one-to-one name="valeEmpleado" class="com.allc.entities.ValeEmpleado"
+			cascade="save-update">
+		</one-to-one>
+		
+		<one-to-one name="gastoEfectivo" class="com.allc.entities.GastoEfectivo"
+			cascade="save-update">
+		</one-to-one>
+		
+		<one-to-one name="rvItemInfo" class="com.allc.entities.ReverseLineItemInfo"
+			cascade="save-update">
+		</one-to-one>
+		
+		<bag name="retencionData" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.RetencionData" />
+		</bag>
+		
+	</class>
+
+	<!-- TENDER LOAN -->
+	<class name="com.allc.entities.TenderLoanTransaction" table="TR_LON_TND">
+		<id name="transactionID" column="id_trn">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<property name="inbound" column="INB_CD_WS" />
+		<property name="outbound" column="OTB_CD_STR" />
+		<property name="operatorCode" column="OPERATOR" />
+	</class>
+
+	<!-- TENDER REPOSITORY -->
+	<class name="com.allc.entities.TenderRepository" table="AS_RPSTY_TND">
+		<id name="tenderRepositoryID">
+			<column name="ID_RPSTY_TND" />
+			<generator class="native" />
+		</id>
+		<property name="typeCode" column="TY_RPSTY_TND" />
+		<property name="name" column="NM_RPSTY_TND" />
+		<property name="description" column="DE_TND_RPSTY" />
+		<property name="code" column="CD_TND_RPSTY" />
+
+		<many-to-one name="businessUnit" column="ID_BSN_UN"
+			class="com.allc.entities.RetailStore" cascade="none" not-null="false" />
+
+		<!-- SAFE SUBCLASS -->
+		<joined-subclass name="com.allc.entities.Safe" table="AS_SF">
+			<key column="ID_RPSTY_TND" />
+			<property name="description" column="DE_SF_STR" />
+		</joined-subclass>
+
+		<!-- TILL SUBCLASS -->
+		<joined-subclass name="com.allc.entities.Till" table="AS_TL" dynamic-insert="true" dynamic-update="true">
+			<key column="ID_RPSTY_TND" />
+			<property name="statusCode" column="SC_TL" />
+			<property name="defaultOpeningCashBalanceAmount" column="CP_BLNC_DFLT_OPN" not-null="false"/>
+		</joined-subclass>
+
+		<!-- EXTERNAL DEPOSITORY SUBCLASS -->
+		<joined-subclass name="com.allc.entities.ExternalDepository"
+			table="LO_EXTDST">
+			<key column="ID_RPSTY_TND" />
+			<property name="name" type="java.lang.String" column="NM_RPSTY_EXTRN" />
+			<property name="description" type="java.lang.String" column="DE_RPSTY_EXTRN" />
+		</joined-subclass>
+	</class>
+
+	<!--########################################### TENDER CONTROL TRANSACTION 
+		TENDER LINE ITEM ########################################### -->
+
+	<class name="com.allc.entities.TenderControlTransactionLineItem"
+		table="TR_LTM_TND_CTL_TND" dynamic-insert="true" dynamic-update="true">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="AI_TND_CTL_ITM" />
+		</composite-id>
+		<many-to-one name="tender" column="ID_TND"
+			class="com.allc.entities.Tender" cascade="save-update" />
+		<many-to-one name="currency" column="ID_CNY"
+			class="com.allc.entities.Currency" cascade="save-update" />
+		<!-- <many-to-one class="com.allc.entities.Denomination" name="denomination" -->
+		<!-- cascade="none"> -->
+		<!-- <column name="ID_DNM" /> -->
+		<!-- </many-to-one> -->
+		<property name="foreignCurrencyAmount" column="MO_FRG_CY" not-null="false" />
+		<property name="exchangeRate" column="RT_EXC" not-null="false"/>
+		<property name="amount" column="MO_TND_FN_TRN" not-null="false" />
+		<property name="count" column="QU_TND_FN_TRN" not-null="false" />
+	</class>
+
+	<!-- TENDER PICKUP -->
+	<class name="com.allc.entities.TenderPickupTransaction" table="TR_PKP_TND">
+		<id name="transactionID" column="id_trn">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<property name="inbound" column="INB_CD_STR" />
+		<property name="outbound" column="OTB_CD_WS" />
+		<property name="operatorCode" column="OPERATOR" />
+	</class>
+
+	<!-- TILL SETTLEMENT -->
+	<class name="com.allc.entities.TenderCountTransaction" table="TR_STLM_TL">
+		<id name="transactionID" column="id_trn">
+			<generator class="assigned">
+			</generator>
+		</id>
+	</class>
+
+	<!-- TENDER DEPOSIT: Egreso de dinero de la tienda a un repositorio externo -->
+	<class name="com.allc.entities.TenderDepositTransaction" table="TR_DS_TND" dynamic-insert="true" dynamic-update="true">
+		<id name="transactionID" column="id_trn">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<many-to-one name="safe" column="ID_RPSTY_TND_FM" class="com.allc.entities.Safe"
+			cascade="none" not-null="true" />
+		<many-to-one name="externalDepository" column="ID_RPSTY_TND_TO"
+			class="com.allc.entities.ExternalDepository" cascade="none" not-null="true" />
+		<property name="description" column="DE_DS" />
+		<property name="amount" column="MO_DS" not-null="false" />
+		<property name="foreignCurrencyAmount" column="MO_DS_FRG_CY" not-null="false" />
+	</class>
+
+	<!-- TENDER RECEIPT: Ingreso de dinero de a tienda desde un repositorio 
+		externo -->
+	<class name="com.allc.entities.TenderReceiptTransaction" table="TR_RCP_TND" dynamic-insert="true" dynamic-update="true">
+		<id name="transactionID" column="id_trn">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<many-to-one name="safe" column="ID_RPSTY_TND_TO" class="com.allc.entities.Safe"
+			cascade="none" not-null="true" />
+		<many-to-one name="externalDepository" column="ID_RPSTY_TND_FM"
+			class="com.allc.entities.ExternalDepository" cascade="none" not-null="true" />
+		<property name="description" column="DE_DS" />
+		<property name="amount" column="MO_DS" not-null="false" />
+		<property name="foreignCurrencyAmount" column="MO_DS_FRG_CY" not-null="false" />
+	</class>
+
+
+	<!-- CONTROL TRANSACTION -->
+	<class name="com.allc.entities.ControlTransaction" table="TR_CTL">
+		<id name="transactionID" column="id_trn">
+			<generator class="assigned">
+			</generator>
+		</id>
+
+		<property name="typeCode" column="TY_TRN_CTL" />
+
+		<!-- SIGN ON -->
+		<one-to-one name="signOn" class="com.allc.entities.SignOnTransaction"
+			cascade="save-update">
+		</one-to-one>
+		<!-- SIGN OFF -->
+		<one-to-one name="signOff" class="com.allc.entities.SignOffTransaction"
+			cascade="save-update">
+		</one-to-one>
+		<!-- BUSINESS EOD -->
+		<one-to-one name="businessEOD" class="com.allc.entities.BusinessEODTransaction"
+			cascade="save-update">
+		</one-to-one>
+		<!-- CARRY FORWARD -->
+		<one-to-one name="carryForward" class="com.allc.entities.CarryForwardTransaction"
+			cascade="save-update">
+		</one-to-one>
+		<!-- TENDER LIST REPORT TRANSACTION -->
+		<!-- <joined-subclass name="com.allc.t2a.distributor.model.arts6.TenderListReportTransaction" -->
+		<!-- table="TR_TND_LST_RPT"> -->
+		<!-- <key column="ID_TRN" /> -->
+		<!-- </joined-subclass> -->
+	</class>
+
+	<!-- SIGN ON -->
+	<class name="com.allc.entities.SignOnTransaction" table="TR_SGN_ON">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+		</composite-id>
+	</class>
+
+	<!-- BUSINESS END OF DAY -->
+	<class name="com.allc.entities.BusinessEODTransaction" table="TR_BSN_EOD">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+		</composite-id>
+	</class>
+	
+	<!-- CARRY AND FORWARD -->
+	<class name="com.allc.entities.CarryForwardTransaction" table="TR_CRY_FWRD">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+		</composite-id>
+		<property name="idBusinessEOD" column="ID_TRN_BSN_EOD" />
+	</class>
+
+	<!-- SIGN OFF -->
+	<class name="com.allc.entities.SignOffTransaction" table="TR_SGN_OFF">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+		</composite-id>
+		<property name="quantityOfTransactions" column="QTY_OF_TR" />
+	</class>
+
+	<!-- RETAIL TRANSACTION -->
+	<class name="com.allc.entities.RetailTransaction" table="TR_RTL" dynamic-insert="true" dynamic-update="true">
+		<id name="transactionID" column="id_trn">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<property name="retailTransactionTypeCode" column="CD_TYP_TRN_RTL" />
+		<property name="ringElapsedTime" column="IN_RNG_ELPSD" not-null="false" />
+		<property name="tenderElapsedTime" column="IN_TND_ELPSD" not-null="false" />
+		<property name="idleElapsedTime" column="IN_ELPSD_IDL" not-null="false" />
+		<property name="lockElapsedTime" column="IN_LCK_ELPSD" not-null="false" />
+		<property name="unitCount" column="QU_UN_RTL_TRN" not-null="false" />
+		<property name="lineItemsScannedCount" column="QU_ITM_LN_SC" not-null="false" />
+		<property name="lineItemsScannedPercent" column="PE_ITM_LN_SC" not-null="false" />
+		<property name="lineItemsKeyedCount" column="QU_ITM_LN_KY" not-null="false" />
+		<property name="lineItemsKeyedPercent" column="PE_ITM_LN_KY" not-null="false" />
+		<property name="keyDepartmentCount" column="QU_DPT_KY" not-null="false" />
+		<property name="keyDepartmentPercent" column="PE_DPT_KY" not-null="false" />
+		<property name="receiptDateTime" column="TS_TRN_RCP" />
+		<property name="includeTax" column="TX_INC" />
+
+		<bag name="lineItems" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.RetailTransactionLineItem" />
+		</bag>
+		<bag name="totalItems" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.RetailTransactionTotal" />
+		</bag>
+		<bag name="managerOverrides" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.ManagerOverride" />
+		</bag>
+		<bag name="exceptionLogs" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.ExceptionLog" />
+		</bag>
+		<bag name="associatedCouponsToRedemptions" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.AssociatedCoupon" />
+		</bag>
+		<bag name="motosData" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.MotoData" />
+		</bag>
+		<bag name="retencionData" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.RetencionData" />
+		</bag>
+		
+		<bag name="giftcardData" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.GiftcardData" />
+		</bag>
+		
+		<bag name="cardData" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.CardData" />
+		</bag>
+		
+		<bag name="checkData" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.CheckData" />
+		</bag>
+		
+		<bag name="billData" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.BillData" />
+		</bag>
+		
+		<bag name="bonoSolidario" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.BonoSolidario" />
+		</bag>
+		
+		<bag name="recargaElectronica" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.RecargaElec" />
+		</bag>
+		
+		<bag name="recaudos" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.Recaudos" />
+		</bag>
+
+		<bag name="transferenciasBancarias" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.TransferenciaBancaria" />
+		</bag>
+		
+		<bag name="pagosConPinpad" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.TenderPinpadInfo" />
+		</bag>
+		
+		<bag name="dscEmpleados" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.DescuentoEmpleados" />
+		</bag>
+		
+		<bag name="datosEmpleados" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.DatosEmpleados" />
+		</bag>
+		
+		<bag name="promotionDiscs" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.PromotionDiscount" />
+		</bag>
+		
+		<bag name="couponsPromotionData" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.CouponPromotionData" />
+		</bag>
+		
+		<bag name="pointsPromotionData" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.PointsPromotionData" />
+		</bag>
+		
+		<bag name="ticketsPromotionData" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.TicketPromotionData" />
+		</bag>
+		
+		<bag name="itemsVentaMayoreo" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.VentaMayoreoItem" />
+		</bag>
+		
+		<bag name="pointsRedemptionData" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.PointsRedemptionData" />
+		</bag>
+		
+		<one-to-one name="notaCredito" class="com.allc.entities.ReturnTransaction"
+			cascade="save-update">
+		</one-to-one>
+		<bag name="returnLineList" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.ReturnLineItem" />
+		</bag>
+		<one-to-one name="automaticCouponData" class="com.allc.entities.AutomaticCouponData"
+			cascade="save-update">
+		</one-to-one>
+		<one-to-one name="usedTargetedCoupons" class="com.allc.entities.UsedTargetedCoupons"
+			cascade="save-update">
+		</one-to-one>
+		<one-to-one name="couponTracking" class="com.allc.entities.CouponTracking"
+			cascade="save-update">
+		</one-to-one>
+		<one-to-one name="preferredCustSecPtsData"
+			class="com.allc.entities.PreferredCustomerSecPtsData" cascade="save-update">
+		</one-to-one>
+		<one-to-one name="preferredCustData" class="com.allc.entities.PreferredCustomerData"
+			cascade="save-update">
+		</one-to-one>
+
+		<one-to-one name="invoiceAssoc" class="com.allc.entities.InvoiceAssociated"
+			cascade="save-update">
+		</one-to-one>
+		
+		<one-to-one name="ferricardData" class="com.allc.entities.FerricardData"
+			cascade="save-update">
+		</one-to-one>
+		
+		<one-to-one name="deducibleData" class="com.allc.entities.DeducibleData"
+			cascade="save-update">
+		</one-to-one>
+		
+		<bag name="ilimitadaData" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.IlimitadaData" />
+		</bag>
+		
+		<one-to-one name="dscEmpTotal" class="com.allc.entities.DescuentoEmpleadosTotal"
+			cascade="save-update">
+		</one-to-one>
+		
+		<one-to-one name="associatedData" class="com.allc.entities.AssociatedData"
+			cascade="save-update">
+		</one-to-one>
+
+		<bag name="aliasElecCoupICList" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.AliasElecCouponItemCode" />
+		</bag>
+
+		<bag name="bonusRedempPtsList" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.BonusRedemptionPoints" />
+		</bag>
+
+		<bag name="couponsDataList" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.CouponData" />
+		</bag>
+
+		<bag name="redeemedCouponsDataList" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.RedeemedCouponData" />
+		</bag>
+		<bag name="stringsUsuario" cascade="save-update" inverse="true">
+			<key column="ID_TRN" />
+			<one-to-many class="com.allc.entities.StringUsuario" />
+		</bag>
+
+	</class>
+
+		<!-- Return Transaction -->
+	<class name="com.allc.entities.ReturnTransaction" table="TR_RTN">
+		<id name="transactionID" column="id_trn">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<property name="numeroNotaCredito" column="RTN_NMB" />
+		<property name="numeroDocOriginal" column="ORGL_AI_TRN" />
+		<property name="numeroFac" column="ORGL_INVC_NMB" />
+		<property name="nroTiendaOriginal" column="ORGL_STR_CD" />
+		<property name="tipo" column="TY_RTN" />
+		<property name="tax" column="IMP_1" />
+		<property name="fechaContOrig" column="ORGL_DC_DY_BSN" />
+		<property name="posOrig" column="ORGL_CD_WS" />
+		<property name="operadorSuite" column="CD_OPR" />
+		<property name="supervisor" column="CD_SUP" />
+	</class>
+	
+	<!-- Invoice Associated -->
+	<class name="com.allc.entities.InvoiceAssociated" table="TR_INVC">
+		<id name="transactionID" column="id_trn">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<property name="invoiceNumber" column="INVC_NMB" />
+		<property name="customerID" column="ID_CPR" />
+		<property name="customerType" column="FL_CP" />
+		<property name="subTotal" column="SUB_TOTAL" />
+		<property name="total" column="TOTAL" />
+		<property name="tax" column="IMP_1" />
+		<property name="nameCustomer" column="NM_CST" />
+		<property name="identificacionCustomer" column="ID_CST" />
+<!-- 		<property name="authorizationNumber" column="INVC_AUT_TOK" /> -->
+<!-- 		<property name="ambiente" column="INVC_AM" /> -->
+<!-- 		<property name="emision" column="INVC_EM" /> -->
+	</class>
+	
+	<!-- Ferricard Data -->
+	<class name="com.allc.entities.FerricardData" table="CO_FERRI_ALM">
+		<id name="transactionID" column="ID_TRN">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<property name="transactionNumber" column="TRN_NBR" />
+		<property name="almacenNumber" column="ALM_NBR" />
+		
+	</class>
+	
+	<!-- Deducible Data -->
+	<class name="com.allc.entities.DeducibleData" table="CO_DEDUCIBLE">
+		<id name="transactionID" column="ID_TRN">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<property name="comestible" column="DEDUC_COMEST" />
+		<property name="ropa" column="DEDUC_ROPA" />
+		<property name="escolar" column="DEDUC_ESC" />
+	</class>
+	
+	<!-- Ilimitada Data -->
+	<class name="com.allc.entities.IlimitadaData" table="CO_ILIM_DT">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="AI_LN_ITM" />
+		</composite-id>
+		<property name="monto" column="AMNT" />
+		<property name="refNum" column="REF_NBR" />
+		<property name="terminalId" column="TML_ID" />
+		<property name="merchantId" column="MRCHNT_ID" />
+		<property name="autNum" column="AUT_NBR" />
+		<property name="ilimData" column="ILIM_DT" />
+		<property name="time" column="TM" />
+		<property name="flVoid" column="FL_VD" />
+	</class>
+	
+	<!-- CedRuc -->
+	<class name="com.allc.entities.CedRuc" table="CO_CPR_CER" dynamic-insert="true" dynamic-update="true">
+		<id name="id" column="ID_CPR" type="long">
+			<generator class="assigned">
+			</generator>
+		</id>
+
+		<property name="codigo" column="CD_CPR" />
+		<property name="tipo" column="TY_CPR" />
+		<property name="regInter" column="RG_INT" not-null="false" />
+		<property name="nombre" column="NOMBRE" />
+		<property name="direccion" column="DIRECCION" />
+		<property name="telefono" column="TELEFONO" />
+		<property name="correo" column="CORREO" />
+		<property name="genero" column="GENERO" />
+
+	</class>
+
+	<!-- Extranjero -->
+	<class name="com.allc.entities.Extranjero" table="CO_EXT_CER">
+		<id name="id" column="ID_CPR">
+			<generator class="native" />
+		</id>
+
+		<property name="codigo" column="CD_CPR" />
+		<property name="nombre" column="NOMBRE" />
+		<property name="direccion" column="DIRECCION" />
+		<property name="telefono" column="TELEFONO" />
+		<property name="correo" column="CORREO" />
+	</class>
+
+	<class name="com.allc.entities.AliasElecCouponItemCode" table="CO_ALS_ELTNC_CPN_ITM_CD" dynamic-insert="true" dynamic-update="true">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="SQN_NMB" />
+		</composite-id>
+		<property name="itemCode" column="ITM_CD" not-null="false" />
+	</class>
+
+	<class name="com.allc.entities.BonusRedemptionPoints" table="CO_BNS_RDM_PNTS" dynamic-insert="true" dynamic-update="true">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="SQN_NMB" />
+		</composite-id>
+		<property name="itemCode" column="ITM_CD" not-null="false" />
+		<property name="value" column="VL" not-null="false" />
+		<property name="moreFlags" column="MR_FLS" not-null="false" />
+		<property name="families" column="FMY" not-null="false" />
+	</class>
+
+	<class name="com.allc.entities.CouponData" table="CO_CPN_DT" dynamic-insert="true" dynamic-update="true">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="barcode" column="CPN_ID" />
+		</composite-id>
+		<property name="promoID" column="PRM_ID" />
+		<property name="customerID" column="CT_ID" />
+		<property name="formatID" column="FRMT_ID" />
+		<property name="impreso" column="FL_PRT" not-null="false" />
+		<property name="itemcode" column="ITM_CD" />
+		<property name="valueDisc" column="VL_DSC" not-null="false" />
+		<property name="apply" column="APLY" />
+		<property name="initDate" column="INIT_DT" />
+		<property name="expDate" column="EXP_DT" />
+		<property name="separator" column="SPRTR" not-null="false" />
+		<property name="logoID" column="LG_ID" />
+		<property name="estado" column="STS" not-null="false" />
+	</class>
+
+	<class name="com.allc.entities.RedeemedCouponData" table="CO_RDM_CPN_DT">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="barcode" column="CPN_ID" />
+		</composite-id>
+		<property name="valueDisc" column="VL_DSC" />
+		<property name="timestamp" column="TM_STP" />
+		<property name="transactionNumber" column="TRN_NMB" />
+		<property name="workstation" column="WS" />
+		<property name="store" column="STR" />
+	</class>
+	
+	<class name="com.allc.entities.ValeEmpleado" table="CO_VALE_EMP_CER">
+		<id name="transactionID" column="id_trn">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<property name="cedula" column="CED" />
+		<property name="codSocSap" column="COD_SOC_SAP" />
+		<property name="comprobante" column="COMP" />
+		<property name="codigo" column="COD" />
+		<property name="cuotas" column="CUOTAS" />
+		<property name="valor" column="VALOR" />
+		<property name="observacion" column="OBS" />
+	</class>
+	
+	<class name="com.allc.entities.GastoEfectivo" table="CO_GASTO_EFE_CER">
+		<id name="transactionID" column="id_trn">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<property name="cedula" column="CED" />
+		<property name="almacen" column="ALM" />
+		<property name="fecha" column="FECHA" />
+		<property name="comprobante" column="COMP" />
+		<property name="seccion" column="SECCION" />
+		<property name="codigo" column="COD" />
+		<property name="tipo" column="TIPO" />
+		<property name="cantidad" column="CANT" />
+		<property name="valor" column="VALOR" />
+		<property name="observacion" column="OBS" />
+	</class>
+	
+	<class name="com.allc.entities.ReverseLineItemInfo" table="CO_LTM_RTN">
+		<id name="transactionID" column="ID_TRN">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<property name="lineItem" column="AI_LN_ITM" />
+		<property name="numNc" column="RTN_NMB" />
+		
+	</class>
+
+	<class name="com.allc.entities.PreferredCustomerData" table="CO_PRFRD_CT_DT" dynamic-insert="true" dynamic-update="true">
+		<id name="transactionID" column="id_trn">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<property name="customerAccountID" column="CTAC_ID" />
+		<property name="points" column="PNTS" not-null="false" />
+		<property name="couponAmount" column="CPN_AMT" not-null="false" />
+		<property name="couponCount" column="CPN_CNT" not-null="false" />
+		<property name="messageCount" column="MSG_CNT" not-null="false" />
+		<property name="tranferredTransAmount" column="TSFRD_TR_CNT" not-null="false" />
+		<property name="transferredTransCount" column="TSFRD_TR_AMT" not-null="false" />
+		<property name="bonusPoints" column="BNS_PNT" not-null="false" />
+		<property name="redeemedPoints" column="RDM_PNT" not-null="false" />
+		<property name="entryMethod" column="ENR_MTH" not-null="false" />
+	</class>
+
+	<class name="com.allc.entities.PreferredCustomerSecPtsData"
+		table="CO_PRFRD_CT_SCN_PNT_DT" dynamic-insert="true" dynamic-update="true">
+		<id name="transactionID" column="id_trn">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<property name="clubNumber" column="CLB_NMB" not-null="false" />
+		<property name="points" column="PNT" not-null="false" />
+		<property name="redeemedPoints" column="RDM_PNT" not-null="false" />
+		<property name="bonusPoints" column="BNS_PNT" not-null="false" />
+		<property name="sales" column="SLS" not-null="false" />
+	</class>
+
+	<class name="com.allc.entities.AutomaticCouponData" table="CO_AUT_CPN_DTA" dynamic-insert="true" dynamic-update="true">
+		<id name="transactionID" column="id_trn">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<property name="mfgCouponAmount" column="MF_CPN_AMT" not-null="false" />
+		<property name="storeCouponAmount" column="STR_CPN_AMT" not-null="false" />
+		<property name="mfgCouponCount" column="MF_CPN_CNT" not-null="false" />
+		<property name="storeCouponCount" column="STR_CPN_CNT" not-null="false" />
+	</class>
+
+	<class name="com.allc.entities.UsedTargetedCoupons" table="CO_USED_TGTD_CPNS" dynamic-insert="true" dynamic-update="true">
+		<id name="transactionID" column="id_trn">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<property name="customerAccountID" column="CTAC_ID" not-null="false" />
+		<property name="targetedCoupon" column="TGTD_CPN" not-null="false" />
+	</class>
+
+	<class name="com.allc.entities.CouponTracking" table="CO_CPN_TRCKNG" dynamic-insert="true" dynamic-update="true">
+		<id name="transactionID" column="id_trn">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<property name="logFlags" column="LOG_FLS" not-null="false" />
+		<property name="campaignNumber" column="CMPGN_NMB" not-null="false" />
+		<property name="mfgNumber" column="MFG_NMB" not-null="false" />
+		<property name="promotionCode" column="PRM_CD" not-null="false" />
+	</class>
+
+
+	<!-- MOTO DATA -->
+	<class name="com.allc.entities.MotoData" table="TR_LTM_MOTO_DT">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="AI_LN_ITM" />
+		</composite-id>
+		<property name="itemCode" column="CD_ITM" type="long"/>
+		<property name="isVoid" column="FL_VD" />
+		<property name="serialNumber" column="SRL_NBR" />
+		<property name="codGerente" column="CC_OPERADOR" />
+		<property name="direccion" column="DIRECCION" />
+		<property name="ciudad" column="CIUDAD" />
+		<property name="telefono" column="TELEFONO" />
+	</class>
+	
+	<!-- CARD DATA -->
+	<class name="com.allc.entities.CardData" table="CO_CRD_DT">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="SQ_NBR" />
+		</composite-id>
+		<property name="cardNumber" column="CRD_NBR" />
+		<property name="cardType" column="CRD_TY" />
+		<property name="flagAutoSyscard" column="FL_AUT_SYS" />
+		<property name="activationCode" column="ACT_CD" />
+		<property name="sequenceTrx" column="SEQ_TRX" />
+		<property name="hora" column="TM" />
+		<property name="idTitular" column="CD_CST" />
+		<property name="monto" column="AMNT" />
+		<property name="cupoDisponible" column="CP_DSP" />
+		<property name="stsTarjeta" column="STS_CRD" />
+		<property name="codRta" column="CD_RSP" />
+	</class>
+	
+	<!-- CHECK DATA -->
+	<class name="com.allc.entities.CheckData" table="CO_CHK_DT">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="SQ_NBR" />
+		</composite-id>
+		<property name="bank" column="BNK" />
+		<property name="checkAccountNumber" column="CHK_ACC_NBR" />
+		<property name="checkNumber" column="CHK_NBR" />
+		<property name="checkDate" column="CHK_DT" />
+		<property name="checkAmount" column="CHK_AMNT" />
+	</class>
+	
+	<!-- BILL DATA -->
+	<class name="com.allc.entities.BillData" table="CO_BILL_DT">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="SQ_NBR" />
+		</composite-id>
+		<property name="denomination" column="DNM" />
+		<property name="number" column="NBR" />
+	</class>
+	
+	<!-- BONO SOLIDARIO -->
+	<class name="com.allc.entities.BonoSolidario" table="CO_BON_SOL">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="SQ_NBR" />
+		</composite-id>
+		<property name="numTrx" column="AI_TRN" />
+		<property name="idCliente" column="ID_CLIENTE" />
+		<property name="cupo" column="CUPO" />
+		<property name="montoDescuento" column="MONTO_DSC" />
+	</class>
+	
+	<!-- RECARGA ELECTRONICA -->
+	<class name="com.allc.entities.RecargaElec" table="CO_REC_ELEC">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="SQ_NBR" />
+		</composite-id>
+		<property name="codigoArt" column="CD_ITM" />
+		<property name="tienda" column="STR" />
+		<property name="terminal" column="WS" />
+		<property name="referencia" column="REF" />
+		<property name="tipo" column="TIPO" />
+		<property name="numero" column="NUM" />
+		<property name="monto" column="MONTO" />
+		<property name="autorizacion" column="NUM_AUTO" />
+		<property name="horaTrx" column="HORA_TRX" />
+		<property name="cancelacion" column="FL_CANCL" />
+	</class>
+	
+	<!-- RECAUDOS -->
+	<class name="com.allc.entities.Recaudos" table="CO_RECAUDOS">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="SQ_NBR" />
+		</composite-id>
+		
+		<property name="tipoTienda" column="TY_STR" />
+		<property name="tipoRecaudo" column="TY_REC" />
+		<property name="codArticulo" column="CD_ITM" />
+		<property name="monto" column="MONTO" />
+	</class>
+	
+	<!-- TRANSFERENCIA BANCARIA -->
+	<class name="com.allc.entities.TransferenciaBancaria" table="CO_TRANSF_BANC">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="SQ_NBR" />
+		</composite-id>
+		
+		<property name="idBanco" column="ID_BANCO" />
+		<property name="numCuenta" column="NUM_CTA" />
+		<property name="monto" column="MONTO" />
+		<property name="flagTender" column="FL_TND" />
+	</class>
+	
+	<!-- DESCUENTOS EMPLEADOS -->
+	<class name="com.allc.entities.DescuentoEmpleados" table="CO_DSC_EMP">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="SQ_NBR" />
+		</composite-id>
+		
+		<property name="codArticulo" column="CD_ITM" />
+		<property name="montoDescuento" column="MO_DSC_EMP" />
+	</class>
+	
+	<!-- Descuento Empleados Total-->
+	<class name="com.allc.entities.DescuentoEmpleadosTotal" table="CO_DSC_EMP_TOT">
+		<id name="transactionID" column="ID_TRN">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<property name="trxNum" column="AI_TRN" />
+		<property name="montoTotalDescuento" column="MO_DSC_TOT" />
+	</class>	
+	
+	<!-- Associated Data-->
+	<class name="com.allc.entities.AssociatedData" table="CO_ASSOCIATED_DATA">
+		<id name="transactionID" column="ID_TRN">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<property name="storeType" column="STR_TYPE" />
+		<property name="personType" column="PRS_TYPE" />
+		<property name="ctaNumber" column="CTA_NUMBER" />
+		<property name="flRedemPoint" column="FL_REDEP_PTS" />
+		<property name="customerID" column="CUSTOMER_ID" />
+		<property name="portadorID" column="PORTADOR_ID" />
+		<property name="namePortador" column="PORTADOR_NAME" />
+	</class>
+	
+	<!-- DATOS EMPLEADOS -->
+	<class name="com.allc.entities.DatosEmpleados" table="CO_DATOS_EMP">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="SQ_NBR" />
+		</composite-id>
+		
+		<property name="numTrx" column="TRX_NUM" />
+		<property name="numTerminal" column="TER_NUM" />
+		<property name="numEmpleado" column="EMP_NUM" />
+		<property name="idPortador" column="ID_PORTADOR" />
+		<property name="nombrePortador" column="NOM_PORTADOR" />
+		<property name="tarjetaPistaA" column="TRJ_PISTA_A" />
+		<property name="tarjetaPistaB" column="TRJ_PISTA_B" />
+	</class>
+	
+	<!-- DESCUENTOS POR PROMOCIONES -->
+	<class name="com.allc.entities.PromotionDiscount" table="TR_LTM_PRM">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="AI_LN_ITM" />
+			<key-property name="promotionSequenceNumber" column="AI_LN_ITM_PRM" />
+		</composite-id>
+		
+		<property name="amount" column="MO_PRM" />
+		<property name="amountWithoutTax" column="MO_PRM_WO_TX" />
+		<property name="promotionCode" column="CD_PRM" />
+		<property name="flvd" column="FL_VD" />
+		<property name="ordinalNumber" column="ORDL_NBR" />
+	</class>
+	
+	<!-- TENDER WITH PINPAD -->
+	<class name="com.allc.entities.TenderPinpadInfo" table="CO_TND_PINPAD">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="SQ_NBR" />
+		</composite-id>
+		
+		<property name="codAdquiriente" column="COD_ADQ" />
+		<property name="codDiferido" column="COD_DIF" />
+		<property name="plazoDiferido" column="PLZ_DIF" />
+		<property name="mesesGracia" column="MSM_GRACIA" />
+		<property name="montoTrx" column="MONTO" />
+		<property name="montoBaseGrabaIva" column="MONTO_B_GRAB_IVA" />
+		<property name="montoBaseNoGrabaIva" column="MONTO_B_NO_GRAB_IVA" />
+		<property name="ivaTrx" column="IVA_TRX" />
+		<property name="interes" column="INTERES" />
+		<property name="seqTrx" column="SEQ_TRX" />
+		<property name="horaTrx" column="HORA_TRX" />
+		<property name="fechaTrx" column="FECHA_TRX" />
+		<property name="numAutorizacion" column="NUM_AUTO" />
+		<property name="mid" column="MID" />
+		<property name="tid" column="TID" />
+		<property name="cid" column="CID" />
+		<property name="arqc" column="ARQC" />
+		<property name="aid" column="AID" />
+		<property name="bankName" column="BNK_NM" />
+		<property name="brandName" column="BRND_NM" />
+	</class>
+	
+	<!-- COUPONS PROMOTION DATA-->
+	<class name="com.allc.entities.CouponPromotionData" table="CO_CPN_PRM_DTA">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="SQ_NBR" />
+		</composite-id>
+		<property name="cupon" column="CD_CPN" />
+		<property name="cantidad" column="QTY" />
+	</class>	
+	
+	<!-- POINTS PROMOTION DATA-->
+	<class name="com.allc.entities.PointsPromotionData" table="CO_PTS_PRM_DTA">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="SQ_NBR" />
+		</composite-id>
+		<property name="lineaNegocio" column="COD_NEGOCIO" />
+		<property name="cantidad" column="QTY" />
+	</class>
+	
+	<!-- TICKETS PROMOTION DATA-->
+	<class name="com.allc.entities.TicketPromotionData" table="CO_TKT_DT">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="SQ_NBR" />
+		</composite-id>
+		<property name="codTicket" column="CD_TKT" />
+		<property name="tipoTicket" column="TKT_TYP" />
+		<property name="cantidadTicket" column="QTY" />
+		<property name="ordinalNumber" column="ORD_NUM" />
+	</class>
+	
+	<!-- ITEM VENTA MAYOREO DATA-->
+	<class name="com.allc.entities.VentaMayoreoItem" table="CO_ITM_SLS_MAY">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="AI_LN_ITM" />
+			<key-property name="sequenceNumberMay" column="AI_LN_ITM_MAY" />
+		</composite-id>
+	</class>
+	
+	<!-- RETENCION DATA -->
+	<class name="com.allc.entities.RetencionData" table="CO_RTNC_CER">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="AI_LN_ITM" />
+		</composite-id>
+		<property name="indicador" column="INDICADOR" />
+		<property name="terminal" column="TERMINAL" />
+		<property name="tiquete" column="TIQUETE" />
+		<property name="fecha" column="FECHA" />
+		<property name="voucher" column="VOUCHER" />
+		<property name="numeroSRI" column="NUMERO_SRI" />
+		<property name="monto" column="MONTO" />
+		<property name="baseImp" column="BASE_IMP" />
+		<property name="porcentaje" column="PORCENTAJE" />
+		<property name="idCliente" column="CLNT_ID" />
+		<property name="nombre" column="CLNT_NM" />
+		<property name="tipoPag" column="TIPO_PAG" />
+		<property name="tender" column="TY_TND" />
+		<property name="tipo" column="TIPO" />
+	</class>
+	
+	<!-- GIFTCARD DATA -->
+	<class name="com.allc.entities.GiftcardData" table="CO_GFTCRD_DT">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="AI_LN_ITM" />
+		</composite-id>
+		<property name="time" column="TM" />
+		<property name="cardNumber" column="CRD_NBR" />
+		<property name="amount" column="AMNT" />
+		<property name="referenceNbr" column="REF_NBR" />
+		<property name="authorizationNbr" column="AUT_NBR" />
+		<property name="responseCode" column="RSP_CD" />
+		<property name="status" column="STS" />
+	</class>
+	
+	<!-- REDENCION PUNTOS DATA -->
+	<class name="com.allc.entities.PointsRedemptionData" table="CO_PTS_RDM_DT">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="AI_LN_ITM" />
+		</composite-id>
+		<property name="time" column="TM" />
+		<property name="discount" column="DSC" />
+		<property name="codNegocio" column="CD_NGC" />
+		<property name="referenceNbr" column="REF_NBR" />
+		<property name="authorizationNbr" column="AUT_NBR" />
+		<property name="tipo" column="TYP" />
+		<property name="bin" column="BIN" />
+		<property name="puntos" column="PTS" />
+		<property name="codItem" column="CD_ITM" type="long"/>
+	</class>
+	
+	<class name="com.allc.entities.StringUsuario" table="CO_STR_USU_CER">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="AI_LN_ITM" />
+		</composite-id>
+		<property name="cadena" column="STRING" />
+	</class>
+	<!--############################ RETAIL TRANSACTION LINE ITEM ############################ -->
+
+	<class name="com.allc.entities.RetailTransactionLineItem" table="TR_LTM_RTL_TRN">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="AI_LN_ITM" />
+		</composite-id>
+		<property name="beginDateTime" column="TS_LN_ITM_BGN" />
+		<property name="voidFlag" column="FL_VD_LN_ITM" />
+		<property name="endDateTime" column="TS_LN_ITM_END" />
+		<property name="entryMethod" column="LU_MTH_LTM_RTL_TRN" />
+		<property name="itemTypeCode" column="ID_TYP_LTM_TRN_RTL" />
+
+		<!-- SALE LINE ITEM -->
+		<one-to-one name="saleLI" class="com.allc.entities.SaleReturnLineItem"
+			cascade="save-update">
+		</one-to-one>
+		<!-- RETURN LINE ITEM -->
+		<one-to-one name="returnLI" class="com.allc.entities.SaleReturnLineItem"
+			cascade="save-update">
+		</one-to-one>
+		<!-- TENDER LINE ITEM -->
+		<one-to-one name="tender" class="com.allc.entities.TenderLineItem"
+			cascade="save-update">
+		</one-to-one>
+		<!-- TAX LINE ITEM -->
+		<one-to-one name="tax" class="com.allc.entities.TaxLineItem"
+			cascade="save-update">
+		</one-to-one>
+		<!-- PRICE MODIFICATION LINE ITEM -->
+		<one-to-one name="priceModification"
+			class="com.allc.entities.PriceModificationLineItem" cascade="save-update">
+		</one-to-one>
+	</class>
+
+	<!--########################################### RETAIL TRANSACTION TOTAL 
+		& TYPE ########################################### -->
+	<class name="com.allc.entities.TransactionTotalType" table="TR_TOT_TYP">
+		<id name="transactionTotalTypeID" column="ID_TR_TOT_TYP">
+			<generator class="native" />
+		</id>
+		<property name="transactionTotalTypeCode" column="TY_TRN_TOT" />
+		<property name="name" column="NM_TYP_TRN_TOT" />
+	</class>
+
+	<class name="com.allc.entities.RetailTransactionTotal" table="TR_TOT_RTL" dynamic-insert="true" dynamic-update="true">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-many-to-one name="transactionTotalType" column="ID_TR_TOT_TYP"
+				class="com.allc.entities.TransactionTotalType" />
+		</composite-id>
+		<property name="amount" column="MO_TOT_RTL_TRN" />
+		<property name="cancelFlag" column="FL_CNCL" not-null="false"/>
+	</class>
+
+	<!-- MANAGER OVERRIDE -->
+	<class name="com.allc.entities.ManagerOverride" table="MGR_OVRD">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="SQN_NBR" />
+		</composite-id>
+		<property name="number" column="NBR" />
+		<property name="reason" column="RSN" />
+		<property name="index" column="INDX" />
+		<property name="initials" column="INTLS" />
+	</class>
+
+	<!-- EXCEPTION LOG -->
+	<class name="com.allc.entities.ExceptionLog" table="EXCPTN_LOG">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="SQN_NBR" />
+		</composite-id>
+		<property name="data" column="LOG_DATA" />
+	</class>
+
+	<!-- ASSOCIATED COUPON TO REDEMPTION -->
+	<class name="com.allc.entities.AssociatedCoupon" table="CO_ASSC_CPN">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="SQN_NBR" />
+		</composite-id>
+		<!-- COUPON TO REDEMPTION -->
+		<many-to-one name="coupon" class="com.allc.entities.CouponToRedemption"
+			cascade="save-update">
+			<column name="ID_CPN" />
+		</many-to-one>
+	</class>
+	
+	<!-- COUPON TO REDEMPTION -->
+	<class name="com.allc.entities.CouponToRedemption" table="CO_CPN_TO_RDM">
+		<id name="id" column="ID_CPN">
+			<generator class="native" />
+		</id>
+		<property name="couponCode" column="CD_CPN" />
+		<property name="timeStamp" column="TM_STMP" />
+		<property name="status" column="STS" />
+		<property name="fechaInicial" column="BGN_DT" />
+		<property name="fechaExpiracion" column="EP_DT" />
+		<property name="maxRedemptions" column="MXM_RDM" />
+		<property name="nRedemptions" column="NMB_RDM" />
+		<property name="lastRedemption" column="LS_RDM" />
+		<property name="percentOff" column="PRCNT_OFF" />
+	</class>
+
+	<!-- SALE RETURN LINE ITEM -->
+	<class name="com.allc.entities.SaleReturnLineItem" table="TR_LTM_SLS_RTN" dynamic-insert="true" dynamic-update="true">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="AI_LN_ITM" />
+		</composite-id>
+		<many-to-one name="item" column="ID_ITM" class="com.allc.entities.Item"
+			cascade="save-update" />
+
+		<property name="regularSalesUnitPrice" column="MO_PRC_REG" not-null="false" />
+		<property name="quantity" column="QU_ITM_LM_RTN_SLS" not-null="false" />
+		<property name="units" column="QU_UN" not-null="false" />
+		<property name="extendedAmount" column="MO_EXTND" not-null="false" /> 
+		<property name="extendedDiscountAmount" column="MO_DSC_UN_EXT" not-null="false" />
+		<property name="entryMethodCode" column="LU_MTH_ID_ENR" />
+		<!-- no se usa para el rosado -->
+		<!-- <property name="taxType" column="TY_TX" /> -->
+		<property name="posDepartmentCode" column="ID_DPT_PS" />
+		<property name="merchandiseHierarchyGroupCode" column="CD_MRHRC_GP" />
+		<property name="priceEntered" column="FL_PRC_ALT" />
+		<property name="appliedTax" column="MO_TX" />
+		<property name="isPromo" column="FL_PRM" />
+		<property name="ordinalNumber" column="ORDL_NBR" />
+		<property name="isPorMayor" column="FL_MAY" />
+		<property name="isPorRedencion" column="FL_RED" />
+	</class>
+	
+	<!-- RETURN LINE ITEM -->
+	<class name="com.allc.entities.ReturnLineItem" table="TR_LTM_RTN" dynamic-insert="true" dynamic-update="true">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="AI_LN_ITM" />
+		</composite-id>
+
+		<property name="originalSequenceNumber" column="OGNL_AI_LN_ITM" />
+	</class>
+
+
+	<!-- TENDER LINE ITEM -->
+	<class name="com.allc.entities.TenderLineItem" table="TR_LTM_TND" dynamic-insert="true" dynamic-update="true">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="AI_LN_ITM" />
+		</composite-id>
+		<property name="typeCode" column="TY_LTM_TND" />
+		<property name="isChangeFlag" column="FL_IS_CHNG" />
+		<many-to-one name="tender" column="ID_TND"
+			class="com.allc.entities.Tender" cascade="save-update" />
+		<property name="tenderAccountNumber" column="ID_ACNT_TND" />
+		<property name="foreignCurrencyAmount" column="MO_FRG_CY" not-null="false" />
+		<many-to-one name="foreignCurrency" column="ID_CNY_FRG"
+			class="com.allc.entities.Currency" cascade="save-update" />
+		<property name="exchangeRate" column="MO_RTE_EXC" not-null="false" />
+		<property name="amount" column="MO_ITM_LN_TND" not-null="false" />
+		<property name="feeAmount" column="MO_FE_ITM_LN_TND" not-null="false" />
+		<property name="status" column="STS_ITM_LN_TND" />
+		<property name="amountAppliedToTransaction" column="MO_TRN_AMT" not-null="false" />
+		<one-to-one name="tenderReturnLineItem" class="com.allc.entities.TenderReturnLineItem"
+			cascade="save-update">
+		</one-to-one>
+	<property name="sequenceNumberVoided" column="AI_LN_ITM_VD" />
+		
+	</class>
+	
+		<!-- TENDER RETURN LINE ITEM -->
+	<class name="com.allc.entities.TenderReturnLineItem" table="TR_LTM_TND_RTN" dynamic-insert="true" dynamic-update="true">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="AI_LN_ITM" />
+		</composite-id>
+		<property name="status" column="STS" />
+	</class>
+
+	<!-- TAX LINE ITEM -->
+	<class name="com.allc.entities.TaxLineItem" table="TR_LTM_TX" dynamic-insert="true" dynamic-update="true">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="AI_LN_ITM" />
+		</composite-id>
+		<property name="taxablePercent" column="PE_TXBLE"  not-null="false" />
+		<property name="taxableAmount" column="MO_TXBL"  not-null="false" />
+		<property name="taxPercent" column="PE_TX"  not-null="false" />
+		<property name="taxAmount" column="MO_TX"  not-null="false" />
+		<property name="taxType" column="TY_TX" />
+		<property name="taxSubType" column="SUB_TY_TX" />
+	</class>
+
+	<!-- PRICE MODIFICATION LINE ITEM -->
+	<class name="com.allc.entities.PriceModificationLineItem" table="TR_LTM_MDF" dynamic-insert="true" dynamic-update="true">
+		<composite-id>
+			<key-property name="transactionID" column="ID_TRN" />
+			<key-property name="sequenceNumber" column="AI_LN_ITM" />
+		</composite-id>
+		<property name="promotionID" column="ID_PRM" />
+		<property name="priceModificationTypeCode" column="TY_MDF" />
+		<property name="percentage" column="PE_MDF" />
+		<property name="amount" column="MO_MDF" not-null="false" />
+		<property name="proratedFlag" column="FL_PRRT" />
+		<property name="cancelFlag" column="FL_CNCL" />
+	</class>
+
+	<!-- TENDER CLASS USED BY TENDER LINE ITEM AND TENDER CHANGE LINE ITEM -->
+	<class name="com.allc.entities.Tender" table="AS_TND">
+		<id name="tenderID" column="ID_TND">
+			<generator class="assigned" />
+		</id>
+		<property name="tenderTypeCode" column="TY_TND" />
+		<property name="description" column="DE_TND" />
+	</class>
+
+	<!-- CURRENCY -->
+	<class name="com.allc.entities.Currency" table="CO_CNY">
+		<id name="currencyID" column="ID_CNY">
+			<generator class="assigned" />
+		</id>
+		<property name="description">
+			<column name="DE_CNY" />
+		</property>
+		<property name="issuingCountryCode">
+			<column name="CD_CY_ISO" />
+		</property>
+	</class>
+
+	<!-- ITEM -->
+	<class name="com.allc.entities.Item" table="AS_ITM" dynamic-insert="true" dynamic-update="true">
+		<id name="itemID" column="ID_ITM">
+			<generator class="native" />
+		</id>
+		<property name="itemCode" column="CD_ITM" type="long"/>
+		<property name="flWorM" column="FL_WM_RQ" not-null="false" />
+		<property name="itemType" column="ID_TY_ITM" />
+		<many-to-one name="merchandiseHierarchyGroup" column="ID_MRHRC_GP"
+			class="com.allc.entities.MerchandiseHierarchyGroup" cascade="save-update" />
+	</class>
+
+	<!-- POS DEPARTMENT -->
+	<class name="com.allc.entities.POSDepartment" table="ID_DPT_PS">
+		<id name="id" column="ID_DPT_PS">
+			<generator class="native" />
+		</id>
+		<property name="name" column="NM_DPT_PS" />
+		<property name="codNegocio" column="COD_NEGOCIO" />
+		<property name="codDptoCer" column="CD_DPT_CER" />
+		<property name="porcentajeRecargo" column="PORC_REC" />
+		<property name="porcentajeDscEmp" column="PORC_DESEMP" />
+		<property name="porcentajeBonSol" column="PORC_BOSOL" />
+		<property name="qtyFlias" column="QTY_MRHRC_GP" />
+	</class>
+
+	<!-- MERCHANDISE HIERARCHY GROUP -->
+	<class name="com.allc.entities.MerchandiseHierarchyGroup" table="CO_MRHRC_GP">
+		<id name="id" column="ID_MRHRC_GP">
+			<generator class="native" />
+		</id>
+		<property name="code" column="CD_MRHRC_GP" />
+		<property name="name" column="NM_MRHRC_GP" />
+		<property name="description" column="DE_MRHRC_GP" />
+		<property name="codMRHCer" column="CD_MRHRC_CER" />
+		<property name="porcentajeRecargo" column="PORC_REC" />
+		
+		
+		<many-to-one name="posDepartment" column="ID_DPT_PS"
+			class="com.allc.entities.POSDepartment" cascade="save-update" />
+	</class>
+
+	<class name="com.allc.entities.Operator" table="PA_OPR">
+		<id name="operatorID" column="id_opr">
+			<generator class="native" />
+		</id>
+		<property name="code">
+			<column name="cd_opr" />
+		</property>
+	</class>
+
+	<class name="com.allc.entities.Workstation" table="AS_WS">
+		<id name="workstationID" column="ID_WS">
+			<generator class="native" />
+		</id>
+		<property name="code">
+			<column name="CD_WS" />
+		</property>
+		<property name="name">
+			<column name="NM_WS" />
+		</property>
+		<property name="manufacturerName">
+			<column name="NM_WS_MF" />
+		</property>
+		<property name="modelNumber">
+			<column name="NM_MDL_WS_TML" />
+		</property>
+
+		<many-to-one name="store" class="com.allc.entities.RetailStore"
+			cascade="save-update" not-null="true">
+			<column name="ID_BSN_UN" />
+		</many-to-one>
+	</class>
+
+	<class name="com.allc.entities.RetailStore" table="PA_STR_RTL">
+        <id name="retailStoreID" column="ID_BSN_UN">
+			<generator class="native" />
+        </id>
+        <property name="description" column="DE_STR_RT" />
+        <property name="code" column="CD_STR_RT" />
+        <property name="ivatax" column="IVA_TAX" />
+        <property name="includeTax" column="INC_PRC" />
+        <property name="tax1" column="IMP_1" />
+        <property name="tax2" column="IMP_2" />
+        <property name="tax3" column="IMP_3" />
+        <property name="tax4" column="IMP_4" />
+        <property name="tax5" column="IMP_5" />
+        <property name="tax6" column="IMP_6" />
+        <property name="tax7" column="IMP_7" />
+        <property name="tax8" column="IMP_8" />
+        <property name="ceCobe" column="CE_COBE" />
+        <property name="noAfiliadoFlag" column="NO_AFIL_FL" />
+        <property name="idCtab" column="ID_CTAB" />
+        <property name="distDir" column="DIST_DIR" />
+        <property name="flagStockLoad" column="FL_STOCK_LOAD" />
+        <property name="idRetailStoreGroup" column="ID_BSN_UN_GP" />
+    </class>
+
+</hibernate-mapping>

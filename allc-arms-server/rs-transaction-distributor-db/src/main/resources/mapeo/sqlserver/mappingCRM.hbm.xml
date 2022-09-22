@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<!--###########
+		TRANSACTION
+		###########-->
+
+	<class name="com.allc.persistence.dao.entities.Activity" table="OP_ACTIVIDAD" dynamic-insert="true" dynamic-update="true">
+		<id name="customerId" column="COD_CLIENTE">
+			<generator class="assigned">
+			</generator>
+		</id>
+		<property name="codCampana" column="COD_CAMPANIA" />
+		<property name="totalPoints" column="TOT_PUNTOS" not-null="false" />
+		<property name="totalTrans" column="TOT_TRANS" not-null="false" />
+		<property name="redeemedPoints" column="PTOS_REEMBOLSO" not-null="false" />
+		<property name="autoCouponAmount" column="AUTO_MONTO_TIENDA" not-null="false" />
+		<property name="lastDate" column="ULT_FECHA_COMPRA" />
+		<property name="lastPoints" column="ULT_ASIGNA_PUNTO" />
+		<property name="statusLevel" column="NIVEL_CLIENTE" />
+		<property name="messageNum" column="NUM_MENSAJE" />
+		<property name="discountGroupId" column="COD_GRPDSCTO" />
+		<property name="multiplier" column="MULTIPLICADOR" />
+		<property name="targetedCouponIds" column="TAR_COUPONID" />
+		<property name="altCustomerNum" column="ALT_NUM_CLIENTE" />
+		<property name="periodStartDate" column="FEC_INI_CAMPANIA" />
+		<property name="periodPoints" column="TOT_PTOS_CAMPANIA" />
+		<property name="periodTransCount" column="NUM_TRAN_CAMPANIA" />
+		<property name="periodRedeemPoints" column="TOT_REEMB_CAMPANIA" />
+		<property name="lastRedeemDate" column="ULT_FEC_REEMBOLSO" />
+		<property name="cumSalesTotal" column="SALDO_VTAS_CAMPANIA" />
+		
+	</class>
+	
+	<class name="com.allc.persistence.dao.entities.RegistroPtos" table="OP_REG_PUNTOS" dynamic-insert="true" dynamic-update="true">
+		<composite-id>
+			<key-property name="customerId" column="COD_CLIENTE" />
+			<key-property name="fechaTrans" column="FEC_TRANSAC" />
+			<key-property name="nroTrans" column="TRANSACCION" />
+		</composite-id>
+		<property name="tipoTrans" column="TIPO_TRANSAC" />
+		<property name="horaTrans" column="HRA_TRANSAC" />
+		<property name="numTerminal" column="NUM_TERMINAL" />
+		<property name="operador" column="OPERADOR" />
+		<property name="sumPtos" column="SUM_PUNTOS" />
+		<property name="resPtos" column="RES_PUNTOS" />
+		<property name="codNegocio" column="COD_NEGOCIO" />
+		<property name="codTienda" column="COD_TIENDA" />
+		<property name="idReg" column="IDREG" />
+		<property name="fecha" column="FECHA" not-null="false" />
+		
+	</class>
+
+	
+</hibernate-mapping>

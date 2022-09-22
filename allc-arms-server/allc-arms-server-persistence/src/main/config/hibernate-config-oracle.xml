@@ -1,0 +1,24 @@
+<assembly>
+	<id>hibernate-config-oracle</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<fileSets>
+		<fileSet>
+			<directory>src/main/config/hibernate/oracle</directory>
+			<outputDirectory>/config</outputDirectory>
+			<includes>
+				<include>hibernateArts.cfg.xml</include>
+				<include>hibernateCotz.cfg.xml</include>
+				<include>hibernateCRM.cfg.xml</include>
+				<include>hibernateDevs.cfg.xml</include>
+				<include>hibernateFlejes.cfg.xml</include>
+				<include>hibernateOpera.cfg.xml</include>
+				<include>hibernateSaadmin.cfg.xml</include>
+				<include>hibernateCVMT.cfg.xml</include>
+				<include>hibernateEyes.cfg.xml</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</assembly>

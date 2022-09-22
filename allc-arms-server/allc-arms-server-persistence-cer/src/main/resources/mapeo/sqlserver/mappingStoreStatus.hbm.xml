@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<!-- StoreStatus -->
+	<class name="com.allc.arms.server.persistence.status.StoreStatus" table="STR_STS">
+		<id name="strStsID" column="ID_STR_STS">
+			<generator class="native" />
+		</id>
+		<property name="terminal" column="TML" />
+		<property name="sLogName" column="LOG_NM" />
+		<property name="numClose" column="NMB_CL" />
+		<property name="closeFlg" column="CL_FL" />
+		<property name="dateTime" column="DT_TM" />
+		<property name="monitor" column="MNTR" />
+		<property name="closeControlFlg" column="CL_CTL_FL" />
+		<property name="indicat0" column="INDICAT_0" />
+		<property name="indicat1" column="INDICAT_1" />
+		<property name="reserved" column="RSRVD" />
+		<property name="storeCode" column="STR_CD" />
+	</class>
+	
+	<!-- TerminalStatus -->
+	<class name="com.allc.arms.server.persistence.status.TerminalStatus" table="WS_STS">
+		<id name="termStsID" column="ID_WS_STS">
+			<generator class="native" />
+		</id>
+		<property name="period" column="PRD" />
+		<property name="terminalNumber" column="TML" />
+		<property name="operator" column="OPR" />
+		<property name="transNum" column="TRN_NMB" />
+		<property name="numLoans" column="NMB_LO" />
+		<property name="amtLoans" column="AMT_LO" />
+		<property name="numPkups" column="NMB_PKP" />
+		<property name="amtPkups" column="AMT_PKP" />
+		<property name="grossPos" column="GS_PSTV" />
+		<property name="grossNeg" column="GS_NV" />
+		<property name="amtMisc" column="AMT_MSC" />
+		<property name="numTrans" column="NMB_TRN" />
+		<property name="tillAmtCash" column="TL_AMT_CSH" />
+		<property name="tillAmtCheck" column="TL_AMT_CHK" />
+		<property name="tillAmtFoods" column="TL_AMT_FDS" />
+		<property name="tillAmtMisc1" column="TL_AMT_MSC_1" />
+		<property name="tillAmtMisc2" column="TL_AMT_MSC_2" />
+		<property name="tillAmtMisc3" column="TL_AMT_MSC_3" />
+		<property name="tillAmtManuf" column="TL_AMT_MF" />
+		<property name="tillAmtStore" column="TL_AMT_STR" />
+		<property name="tranType" column="TRN_TY" />
+		<property name="status" column="STS" />
+		<property name="status2" column="STS_2" />
+		<property name="storeCode" column="STR_CD" />
+		<property name="ultNumFact" column="ULT_NUM_FACT" />
+		
+	</class>
+	
+</hibernate-mapping>

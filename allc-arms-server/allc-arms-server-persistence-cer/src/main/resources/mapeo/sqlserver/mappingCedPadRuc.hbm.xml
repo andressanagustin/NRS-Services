@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+		<!-- CedRuc -->
+	<class name="com.allc.entities.CedRuc" table="CO_CPR_CER">
+		<id name="id" column="ID_CPR" type="long">
+			<generator class="assigned">
+			</generator>
+		</id>
+		
+		<property name="codigo" column="CD_CPR" />
+		<property name="tipo" column="TY_CPR" />
+		<property name="regInter" column="RG_INT" />
+		<property name="nombre" column="NOMBRE" />
+		<property name="direccion" column="DIRECCION" />
+		<property name="telefono" column="TELEFONO" />
+		<property name="correo" column="CORREO" />
+		<property name="genero" column="GENERO" />
+		
+		<!-- REGISTRO ELECTORAL -->
+		<one-to-one name="registroElec" class="com.allc.entities.CedRegElec" cascade="save-update">
+		</one-to-one>
+	</class>
+	
+		<!-- Padron -->
+	<class name="com.allc.entities.Padron" table="CO_PAD_CER">
+		<id name="id" column="ID_CPR">
+			<generator class="assigned">
+			</generator>
+		</id>
+		
+		<property name="codigo" column="CD_CPR" />
+		<property name="recinto" column="RECINTO" />
+		<property name="mesa" column="MESA" />
+		<property name="junta" column="JUNTA" />
+		<property name="funcion" column="FUNCION" />
+		<property name="direccion" column="DIRECCION" />
+	</class>
+	
+		<!-- Extranjero -->
+	<class name="com.allc.entities.Extranjero" table="CO_EXT_CER">
+		<id name="id" column="ID_CPR">
+			<generator class="native" />
+		</id>
+		
+		<property name="codigo" column="CD_CPR" />
+		<property name="nombre" column="NOMBRE" />
+		<property name="direccion" column="DIRECCION" />
+		<property name="telefono" column="TELEFONO" />
+		<property name="correo" column="CORREO" />
+	</class>
+	
+		<!-- CedRegElec -->
+	<class name="com.allc.entities.CedRegElec" table="CO_REL_CER">
+		<id name="id" column="ID_CPR" type="long">
+			<generator class="assigned">
+			</generator>
+		</id>
+		
+		<property name="provincia" column="PROVINCIA" />
+		<property name="canton" column="CANTON" />
+		<property name="parroquia" column="PARROQUIA" />
+		<property name="zona" column="ZONA" />
+		<property name="recinto" column="RECINTO" />
+		<property name="mesa" column="MESA" />
+		<property name="junta" column="JUNTA" />
+		<property name="circunscripcion" column="CIRCUNSCRIPCION" />
+		<property name="genero" column="GENERO" />
+	</class>
+	
+</hibernate-mapping>

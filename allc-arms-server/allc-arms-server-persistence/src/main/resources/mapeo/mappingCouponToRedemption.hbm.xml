@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+
+	<!-- COUPON TO REDEMPTION -->
+	<class name="com.allc.entities.CouponToRedemption" table="CO_CPN_TO_RDM">
+		<id name="id" column="ID_CPN">
+			<generator class="native" />
+		</id>
+		<property name="couponCode" column="CD_CPN" />
+		<property name="timeStamp" column="TM_STMP" />
+		<property name="status" column="STS" />
+		<property name="fechaInicial" column="BGN_DT" />
+		<property name="fechaExpiracion" column="EP_DT" />
+		<property name="maxRedemptions" column="MXM_RDM" />
+		<property name="nRedemptions" column="NMB_RDM" />
+		<property name="lastRedemption" column="LS_RDM" />
+		<property name="percentOff" column="PRCNT_OFF" />
+	</class>
+	
+</hibernate-mapping>
